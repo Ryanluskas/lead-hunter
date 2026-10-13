@@ -1,14 +1,14 @@
 /**
- * Configuração central da marca.
+ * Configuração central da marca Code Makers + Code Hunter.
  * Altere aqui o nome, a assinatura e os textos institucionais do produto.
- * As cores ficam exclusivamente nos tokens de src/app/globals.css.
  */
 export const BRAND = {
-  name: 'Lead Hunter',
-  shortName: 'LH',
-  tagline: 'Prospecção e inteligência comercial',
+  name: 'Code Hunter',
+  company: 'Code Makers',
+  shortName: 'CM',
+  tagline: 'Da ideia ao cliente. Do cliente ao dinheiro no bolso.',
   description:
-    'Plataforma de prospecção comercial, inteligência de mercado e gestão de oportunidades para quem vende sites a empresas locais.',
+    'Crie com IA. Encontre com a Code Hunter. Venda com a nossa metodologia.',
 } as const;
 
 export const brandConfig = BRAND;
