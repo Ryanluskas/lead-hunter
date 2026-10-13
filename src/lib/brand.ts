@@ -1,14 +1,13 @@
 /**
- * Configuração central da marca Code Makers + Code Hunter.
- * Altere aqui o nome, a assinatura e os textos institucionais do produto.
+ * Lead Hunter — Configuração Oficial da Marca
+ * Identidade institucional padronizada.
  */
 export const BRAND = {
-  name: 'Code Hunter',
-  company: 'Code Makers',
-  shortName: 'CM',
-  tagline: 'Da ideia ao cliente. Do cliente ao dinheiro no bolso.',
+  name: 'Lead Hunter',
+  shortName: 'LH',
+  tagline: 'Inteligência de Mercado & Prospecção Ativa',
   description:
-    'Crie com IA. Encontre com a Code Hunter. Venda com a nossa metodologia.',
+    'Plataforma profissional de prospecção de empresas locais, auditoria técnica de websites e gestão comercial de oportunidades.',
 } as const;
 
 export const brandConfig = BRAND;

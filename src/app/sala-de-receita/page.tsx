@@ -4,46 +4,45 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
-  Code,
+  DollarSign,
+  TrendingUp,
+  Clock,
+  CheckCircle2,
+  Calendar,
   Sparkles,
-  Maximize2,
-  Volume2,
-  VolumeX,
-  Play,
-  RotateCcw,
+  BarChart3,
+  Building2,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
   CartesianGrid,
-  Area,
 } from 'recharts';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
+import { BRAND } from '@/lib/brand';
+import { formatCurrency } from '@/lib/utils';
 
-// Dados dos horários simulando exatamente o gráfico da foto (pico às 00h e projeção às 22h)
-const hourlyData = [
-  { hour: '00', hoje: 1297, media: 0 },
-  { hour: '02', hoje: 0, media: 0 },
-  { hour: '04', hoje: 0, media: 0 },
-  { hour: '06', hoje: 0, media: 0 },
-  { hour: '08', hoje: 0, media: 0 },
-  { hour: '10', hoje: 0, media: 0 },
-  { hour: '12', hoje: 0, media: 0 },
-  { hour: '14', hoje: 0, media: 0 },
-  { hour: '16', hoje: 0, media: 0 },
-  { hour: '18', hoje: 0, media: 0 },
-  { hour: '20', hoje: 0, media: 0 },
-  { hour: '22', hoje: 0, media: 450 },
+// Horários com receita acumulada no dia
+const initialHourlyData = [
+  { hour: '08:00', receita: 0 },
+  { hour: '10:00', receita: 1297 },
+  { hour: '12:00', receita: 1297 },
+  { hour: '14:00', receita: 2594 },
+  { hour: '16:00', receita: 2594 },
+  { hour: '18:00', receita: 3891 },
+  { hour: '20:00', receita: 3891 },
 ];
 
 export default function SalaDeReceitaPage() {
   const [currentTime, setCurrentTime] = useState<string>('');
-  const [salesCount, setSalesCount] = useState<number>(1);
-  const [totalRevenue, setTotalRevenue] = useState<number>(1297);
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [salesCount, setSalesCount] = useState<number>(3);
+  const [totalRevenue, setTotalRevenue] = useState<number>(3891);
   const [recentNotification, setRecentNotification] = useState<string | null>(null);
 
   // Relógio ao vivo em tempo real
@@ -60,7 +59,7 @@ export default function SalaDeReceitaPage() {
         minute: '2-digit',
         second: '2-digit',
       });
-      setCurrentTime(`${dateStr} • ${timeStr} GMT-03`);
+      setCurrentTime(`${dateStr} • ${timeStr} (Horário de Brasília)`);
     };
 
     updateTime();
@@ -68,297 +67,244 @@ export default function SalaDeReceitaPage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Simular recebimento de nova venda ao vivo
+  // Simular registro de nova venda
   const handleSimulateSale = () => {
     const saleValue = 1297;
     setSalesCount((prev) => prev + 1);
     setTotalRevenue((prev) => prev + saleValue);
-    setRecentNotification(`Nova venda confirmada! +R$ ${saleValue.toLocaleString('pt-BR')},00`);
+    setRecentNotification(`Nova venda confirmada: +${formatCurrency(saleValue)}`);
 
     setTimeout(() => {
       setRecentNotification(null);
-    }, 4500);
+    }, 4000);
   };
 
+  const avgTicket = salesCount > 0 ? totalRevenue / salesCount : 0;
+
   return (
-    <div className="min-h-screen bg-[#070002] text-white flex flex-col justify-between selection:bg-[#ff5a5a] selection:text-black font-sans relative overflow-x-hidden">
-      {/* Background Geométrico e Iluminação Dark Ruby */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#3A040D]/40 via-[#100104]/80 to-[#070002] pointer-events-none -z-10" />
-
-      {/* Grid sutil de perspectiva */}
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none -z-10"
-        style={{
-          backgroundImage:
-            'linear-gradient(#ff5a5a 1px, transparent 1px), linear-gradient(to right, #ff5a5a 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-
+    <div className="min-h-screen bg-lh-bg text-lh-text selection:bg-lh-primary-soft selection:text-lh-primary font-sans">
       {/* ------------------------------------------------------------- */}
-      {/* TOPO: Voltar, Logo Central Sci-Fi e Relógio                   */}
+      {/* CABEÇALHO EXECUTIVO                                           */}
       {/* ------------------------------------------------------------- */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 pt-6 pb-2">
-        <div className="flex items-center justify-between relative">
-          {/* Botão Superior Esquerdo: Voltar à dashboard */}
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#160000]/80 hover:bg-[#2b0208] border border-[#520000] text-xs font-semibold text-[#D4D4D8] hover:text-white transition-all shadow-[0_0_15px_rgba(176,0,0,0.25)]"
-          >
-            <ArrowLeft className="w-4 h-4 text-[#ff5a5a]" />
-            <span>Voltar à dashboard</span>
-          </Link>
-
-          {/* Logo Central Futurista: </> CODE MAKERS */}
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
-            <div className="hidden sm:block w-12 h-px bg-gradient-to-r from-transparent to-[#ff5a5a]" />
-            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#160000] border border-[#520000] shadow-[0_0_20px_rgba(176,0,0,0.5)]">
-              <Code className="w-4 h-4 text-[#ff5a5a]" />
-              <span className="font-extrabold text-sm tracking-wider font-sora uppercase">
-                CODE MAKERS
-              </span>
+      <header className="bg-lh-surface border-b border-lh-border sticky top-0 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/dashboard"
+              className="p-2 rounded-lh-sm text-lh-text-secondary hover:text-lh-text hover:bg-lh-surface-alt transition-colors"
+              title="Voltar ao Dashboard"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div>
+              <h1 className="text-base sm:text-lg font-bold text-lh-text flex items-center gap-2">
+                Monitor de Receita em Tempo Real
+                <Badge variant="success" size="sm">
+                  Ao Vivo
+                </Badge>
+              </h1>
+              <p className="text-xs text-lh-text-muted">{BRAND.name} • Gestão Financeira Executiva</p>
             </div>
-            <div className="hidden sm:block w-12 h-px bg-gradient-to-l from-transparent to-[#ff5a5a]" />
           </div>
 
-          {/* Ações Rápidas Direita: Simular / Áudio */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleSimulateSale}
-              className="px-3 py-1.5 rounded-full bg-[#520000]/60 hover:bg-[#b00000] border border-[#ff5a5a]/40 text-[11px] font-mono font-bold text-[#ffd6d6] hover:text-white transition-all shadow-[0_0_15px_rgba(255,90,90,0.3)] flex items-center gap-1.5"
-              title="Testar alerta de nova venda"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-[#ff5a5a]" />
-              <span className="hidden sm:inline">+ Simular Venda</span>
-            </button>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-lh-text-secondary bg-lh-surface-alt px-3 py-1.5 rounded-lh-md border border-lh-border">
+              <Clock className="w-3.5 h-3.5 text-lh-primary" />
+              <span>{currentTime}</span>
+            </div>
 
-            <button
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              className="p-2 rounded-full bg-[#160000] border border-[#520000] text-[#D4D4D8] hover:text-white transition-colors"
-              title={soundEnabled ? 'Silenciar Alertas' : 'Ativar Som'}
-            >
-              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </button>
+            <Link href="/vendas">
+              <Button variant="secondary" size="sm">
+                <DollarSign className="w-3.5 h-3.5 mr-1 text-lh-accent" />
+                Painel de Vendas
+              </Button>
+            </Link>
           </div>
         </div>
+      </header>
 
-        {/* Título Principal Centralizado */}
-        <div className="text-center mt-6">
-          <div className="text-[11px] font-mono uppercase font-bold tracking-widest text-[#ff5a5a] flex items-center justify-center gap-2">
-            <span>SALA DE RECEITA</span>
-            <span>•</span>
-            <span className="text-white">VICTOR HUGO</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-sora tracking-tight text-white mt-1">
-            Vendas hoje
-          </h1>
-
-          <div className="text-xs font-mono text-[#8E8D92] mt-1.5 flex items-center justify-center gap-2">
-            <span>—</span>
-            <span>{currentTime || '31/08/2026 • 17:35:40 GMT-03'}</span>
-            <span>—</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ------------------------------------------------------------- */}
-      {/* NOTIFICAÇÃO FLUTUANTE DE NOVA VENDA                           */}
-      {/* ------------------------------------------------------------- */}
+      {/* Alerta de notificação temporária */}
       {recentNotification && (
-        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-[#160000] border-2 border-[#169B62] rounded-full px-6 py-2.5 shadow-[0_0_40px_rgba(22,155,98,0.7)] animate-bounce flex items-center gap-3">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#169B62] animate-ping" />
-          <span className="text-xs font-mono font-bold text-[#169B62] uppercase tracking-wider">
-            {recentNotification}
-          </span>
+        <div className="bg-lh-accent text-white px-4 py-2.5 text-center text-xs font-semibold shadow-xs flex items-center justify-center gap-2 animate-fadeIn">
+          <CheckCircle2 className="w-4 h-4" />
+          <span>{recentNotification}</span>
         </div>
       )}
 
       {/* ------------------------------------------------------------- */}
-      {/* CORPO PRINCIPAL: HUD CARD GIGANTE & GRÁFICO (Exato da Imagem) */}
+      {/* CONTEÚDO PRINCIPAL                                            */}
       {/* ------------------------------------------------------------- */}
-      <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 flex-1 flex flex-col justify-center py-4">
-        {/* HUD BOX PRINCIPAL: FATURAMENTO CONFIRMADO */}
-        <div className="relative bg-[#0d0104]/90 backdrop-blur-xl border-2 border-[#520000] rounded-3xl p-6 sm:p-10 shadow-[0_0_60px_-10px_rgba(176,0,0,0.6)]">
-          {/* Marcadores Laterais de Diamante Vermelho (Exatos da foto) */}
-          <div className="absolute top-1/2 -left-2.5 -translate-y-1/2 w-5 h-5 bg-[#ff5a5a] rotate-45 shadow-[0_0_20px_#ff5a5a] border border-white/40" />
-          <div className="absolute top-1/2 -right-2.5 -translate-y-1/2 w-5 h-5 bg-[#ff5a5a] rotate-45 shadow-[0_0_20px_#ff5a5a] border border-white/40" />
-
-          {/* Cabeçalho do Card */}
-          <div className="flex items-center justify-between text-xs font-mono">
-            <span className="text-[#8E8D92] uppercase font-bold tracking-wider">
-              FATURAMENTO CONFIRMADO
-            </span>
-            <span className="px-3 py-1 rounded bg-[#240003] text-[#ff5a5a] border border-[#ff5a5a]/40 font-bold tracking-wider">
-              CM - LIVE 01
-            </span>
-          </div>
-
-          {/* VALOR GIGANTE CYAN BRILHANTE (Exato da Foto: R$ 1.297,00) */}
-          <div className="text-center my-6 sm:my-8">
-            <div className="text-5xl sm:text-7xl md:text-8xl font-black font-sora tracking-tight text-[#00F0FF] drop-shadow-[0_0_35px_rgba(0,240,255,0.7)]">
-              R$ {totalRevenue.toLocaleString('pt-BR')},00
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+        {/* 4 KPIs de Receita */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-lh-text-secondary">Faturamento Fechado Hoje</span>
+              <div className="p-1.5 rounded-lh-md bg-lh-accent-soft text-lh-accent">
+                <DollarSign className="w-4 h-4" />
+              </div>
             </div>
+            <p className="text-2xl sm:text-3xl font-extrabold text-lh-accent mt-3 lh-tabular">
+              {formatCurrency(totalRevenue)}
+            </p>
+            <span className="text-[11px] text-lh-text-muted mt-1 block">Receita confirmada do dia</span>
+          </Card>
 
-            {/* Sublinha: Atualização automática | +63% vs. ontem */}
-            <div className="flex items-center justify-center gap-4 text-xs font-mono mt-4 text-[#8E8D92]">
-              <span className="flex items-center gap-2 text-[#ff5a5a]">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ff5a5a] animate-pulse" />
-                <span className="font-bold">Atualização automática</span>
-              </span>
-              <span>•</span>
-              <span className="text-[#ff5a5a] font-bold">+63% vs. ontem</span>
+          <Card className="p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-lh-text-secondary">Contratos Fechados Hoje</span>
+              <div className="p-1.5 rounded-lh-md bg-lh-primary-soft text-lh-primary">
+                <TrendingUp className="w-4 h-4" />
+              </div>
             </div>
-          </div>
+            <p className="text-2xl sm:text-3xl font-extrabold text-lh-text mt-3 lh-tabular">
+              {salesCount}
+            </p>
+            <span className="text-[11px] text-lh-text-muted mt-1 block">Assinaturas e confirmações</span>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-lh-text-secondary">Ticket Médio</span>
+              <div className="p-1.5 rounded-lh-md bg-lh-bg-subtle text-lh-text-secondary">
+                <BarChart3 className="w-4 h-4" />
+              </div>
+            </div>
+            <p className="text-2xl sm:text-3xl font-extrabold text-lh-text mt-3 lh-tabular">
+              {formatCurrency(avgTicket)}
+            </p>
+            <span className="text-[11px] text-lh-text-muted mt-1 block">Por oportunidade ganha</span>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-lh-text-secondary">Status de Operação</span>
+              <div className="p-1.5 rounded-lh-md bg-lh-accent-soft text-lh-accent">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+            </div>
+            <p className="text-xl font-bold text-lh-accent mt-3">Operando</p>
+            <span className="text-[11px] text-lh-text-muted mt-1 block">Integração comercial ativa</span>
+          </Card>
         </div>
 
-        {/* ----------------------------------------------------------- */}
-        {/* SEÇÃO DO GRÁFICO: TENDÊNCIA DE VENDAS                       */}
-        {/* ----------------------------------------------------------- */}
-        <div className="mt-8 pt-6 border-t border-[#3A0812]">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-            <div>
-              <div className="text-[10px] font-mono uppercase font-bold tracking-widest text-[#ff5a5a]">
-                DESEMPENHO POR HORÁRIO
+        {/* Gráfico de Evolução ao Longo do Dia */}
+        <Card>
+          <CardHeader>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <CardTitle>Curva de Faturamento Diário</CardTitle>
+                <CardDescription>
+                  Progressão de receita contratada e liquidada ao longo do horário comercial
+                </CardDescription>
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold font-sora text-white">
-                Tendência de vendas
-              </h2>
-              <div className="text-xs text-[#8E8D92]">
-                Receita confirmada ao longo do dia
+              <Button variant="success" size="sm" onClick={handleSimulateSale}>
+                <DollarSign className="w-3.5 h-3.5 mr-1" />
+                Registrar Venda Simulada
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="h-72 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={initialHourlyData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="revenueGrowth" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#16845B" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#16845B" stopOpacity={0.01} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#DCE5E8" />
+                  <XAxis dataKey="hour" stroke="#71838A" fontSize={11} tickLine={false} axisLine={false} />
+                  <YAxis
+                    stroke="#71838A"
+                    fontSize={11}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(val) => `R$${val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}`}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#FFFFFF',
+                      borderColor: '#DCE5E8',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 16px rgba(16, 59, 69, 0.08)',
+                      fontSize: '12px',
+                      color: '#182A2F',
+                    }}
+                    formatter={(val: any) => [formatCurrency(Number(val)), 'Receita Acumulada']}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="receita"
+                    stroke="#16845B"
+                    strokeWidth={2.5}
+                    fillOpacity={1}
+                    fill="url(#revenueGrowth)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Transações Recentes Confirmadas */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Últimas Oportunidades Ganhas</CardTitle>
+            <CardDescription>Transações registradas recentemente no sistema</CardDescription>
+          </CardHeader>
+          <CardContent className="divide-y divide-lh-border p-0">
+            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-lh-text">Clínica Odontológica Sorriso</h4>
+                  <p className="text-[11px] text-lh-text-muted">Contrato de Gestão Digital & Presença Web</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-bold text-lh-accent">{formatCurrency(1297)}</span>
+                <span className="block text-[10px] text-lh-text-muted">Confirmado</span>
               </div>
             </div>
 
-            {/* Legenda do Gráfico */}
-            <div className="flex items-center gap-5 text-xs font-mono">
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-0.5 bg-[#ff5a5a] shadow-[0_0_8px_#ff5a5a]" />
-                <span className="text-white font-bold">Hoje</span>
+            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-lh-text">Auto Mecânica Central</h4>
+                  <p className="text-[11px] text-lh-text-muted">Otimização Google Maps & Perfil de Empresa</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-0.5 bg-[#8E8D92]" />
-                <span className="text-[#8E8D92]">Média</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Gráfico Recharts Fiel à Foto */}
-          <div className="w-full h-56 sm:h-64 bg-[#0a0103] rounded-2xl border border-[#3A0812] p-4 relative overflow-hidden shadow-[inset_0_0_30px_rgba(0,0,0,0.8)]">
-            <div className="text-[10px] font-mono text-[#8E8D92] absolute top-2 left-4">
-              VENDAS (R$)
-            </div>
-
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={hourlyData} margin={{ top: 20, right: 10, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#250308" vertical={false} />
-                <XAxis
-                  dataKey="hour"
-                  stroke="#5A5960"
-                  fontSize={11}
-                  tickLine={false}
-                  axisLine={{ stroke: '#3A0812' }}
-                />
-                <YAxis
-                  stroke="#5A5960"
-                  fontSize={10}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(v) => (v === 1297 ? '1,3 mil' : v === 0 ? '0' : `${v}`)}
-                  ticks={[0, 324, 648, 972, 1297]}
-                />
-                <Tooltip
-                  content={({ active, payload }) => {
-                    if (active && payload && payload.length) {
-                      return (
-                        <div className="bg-[#160000] border border-[#ff5a5a] p-2.5 rounded-xl shadow-xl text-xs font-mono">
-                          <div className="text-[#8E8D92]">{payload[0].payload.hour}:00h</div>
-                          <div className="text-[#00F0FF] font-bold">
-                            Hoje: R$ {Number(payload[0].value).toLocaleString('pt-BR')},00
-                          </div>
-                        </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-                {/* Linha Vermelha de Hoje (com pico nas 00h) */}
-                <Line
-                  type="monotone"
-                  dataKey="hoje"
-                  stroke="#ff5a5a"
-                  strokeWidth={2.5}
-                  dot={{ r: 3, fill: '#ff5a5a' }}
-                  activeDot={{ r: 6, fill: '#ffffff', stroke: '#ff5a5a', strokeWidth: 2 }}
-                />
-                {/* Linha Branca/Cinza de Projeção Média */}
-                <Line
-                  type="monotone"
-                  dataKey="media"
-                  stroke="#8E8D92"
-                  strokeWidth={1.5}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* ----------------------------------------------------------- */}
-          {/* 3 MÉTRICAS INFERIORES: Conforme Imagem 2                   */}
-          {/* ----------------------------------------------------------- */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mt-6">
-            {/* Bloco 1: VENDAS CONFIRMADAS */}
-            <div className="bg-[#120104]/80 p-4 rounded-2xl border border-[#3A0812] shadow-[0_5px_20px_rgba(0,0,0,0.5)]">
-              <div className="text-[10px] font-mono text-[#8E8D92] uppercase tracking-wider font-semibold">
-                VENDAS CONFIRMADAS
-              </div>
-              <div className="text-2xl sm:text-3xl font-black font-sora text-white mt-1">
-                {String(salesCount).padStart(2, '0')}
-              </div>
-              <div className="text-[10px] font-mono text-[#ff5a5a] mt-0.5 uppercase tracking-wider">
-                pagamento hoje
+              <div className="text-right">
+                <span className="text-xs font-bold text-lh-accent">{formatCurrency(1297)}</span>
+                <span className="block text-[10px] text-lh-text-muted">Confirmado</span>
               </div>
             </div>
 
-            {/* Bloco 2: TICKET MÉDIO */}
-            <div className="bg-[#120104]/80 p-4 rounded-2xl border border-[#3A0812] shadow-[0_5px_20px_rgba(0,0,0,0.5)]">
-              <div className="text-[10px] font-mono text-[#8E8D92] uppercase tracking-wider font-semibold">
-                TICKET MÉDIO
+            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-lh-text">Restaurante & Pizzaria Bela Vista</h4>
+                  <p className="text-[11px] text-lh-text-muted">Cardápio Online & Otimização de SEO Local</p>
+                </div>
               </div>
-              <div className="text-2xl sm:text-3xl font-black font-sora text-white mt-1">
-                R$ 1.297,00
-              </div>
-              <div className="text-[10px] font-mono text-[#D4D4D8] mt-0.5">
-                por projeto
-              </div>
-            </div>
-
-            {/* Bloco 3: LUCRO DE HOJE (Neon Cyan) */}
-            <div className="bg-[#120104]/80 p-4 rounded-2xl border border-[#3A0812] shadow-[0_5px_20px_rgba(0,0,0,0.5)]">
-              <div className="text-[10px] font-mono text-[#8E8D92] uppercase tracking-wider font-semibold">
-                LUCRO DE HOJE
-              </div>
-              <div className="text-2xl sm:text-3xl font-black font-sora text-[#00F0FF] drop-shadow-[0_0_15px_rgba(0,240,255,0.7)] mt-1">
-                R$ {totalRevenue.toLocaleString('pt-BR')},00
-              </div>
-              <div className="text-[10px] font-mono text-[#ff5a5a] mt-0.5 uppercase tracking-wider font-bold">
-                100% de margem
+              <div className="text-right">
+                <span className="text-xs font-bold text-lh-accent">{formatCurrency(1297)}</span>
+                <span className="block text-[10px] text-lh-text-muted">Confirmado</span>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </main>
-
-      {/* ------------------------------------------------------------- */}
-      {/* RODAPÉ DO MONITOR: Frase com Ponto Pulsante                   */}
-      {/* ------------------------------------------------------------- */}
-      <footer className="w-full py-4 text-center border-t border-[#3A0812]/40 text-xs font-mono text-[#8E8D92]">
-        <div className="flex items-center justify-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#ff5a5a] animate-pulse" />
-          <span>
-            A tela acompanha automaticamente as novas vendas registradas por Victor Hugo
-          </span>
-        </div>
-      </footer>
     </div>
   );
 }

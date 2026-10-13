@@ -11,6 +11,10 @@ import {
   Cell,
 } from 'recharts';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Button } from '@/components/ui/Button';
+import { Users } from 'lucide-react';
+import Link from 'next/link';
 
 export interface FunnelChartProps {
   data: Array<{
@@ -21,73 +25,100 @@ export interface FunnelChartProps {
 }
 
 export function FunnelChart({ data }: FunnelChartProps) {
+  const totalCount = Array.isArray(data) ? data.reduce((acc, curr) => acc + (curr.count || 0), 0) : 0;
+  const hasData = totalCount > 0;
+
   const getStageColor = (stage: string, fallback?: string) => {
     const s = stage.toLowerCase();
-    if (s.includes('venda') || s.includes('vendido') || s.includes('conclu')) {
-      return '#C42759'; // Vibrant Cherry Blossom para vitórias
+    // Venda / Ganho -> Verde crescimento oficial
+    if (s.includes('venda') || s.includes('ganho') || s.includes('fechad') || s.includes('conclu')) {
+      return '#16845B';
     }
-    if (s.includes('perdid') || s.includes('descarte')) {
-      return '#797878'; // Slate Gray para perdas
+    // Perda / Descarte -> Vermelho discreto semântico
+    if (s.includes('perdid') || s.includes('descarte') || s.includes('recusad')) {
+      return '#B42332';
     }
-    if (s.includes('qualifica') || s.includes('proposta') || s.includes('negocia')) {
-      return '#550416'; // Rich Crimson Wine
+    // Avançados (Proposta, Negociação) -> Azul-petróleo escuro
+    if (s.includes('negocia') || s.includes('proposta')) {
+      return '#103B45';
     }
-    if (s.includes('reuni') || s.includes('interess')) {
-      return '#7E0A24'; // Crimson intermediário
+    // Intermediários (Reunião, Apresentação, Qualificado) -> Azul-petróleo primário
+    if (s.includes('reuni') || s.includes('qualifica') || s.includes('apresenta')) {
+      return '#145866';
     }
-    return '#ABABAB'; // Medium Silver para estágios iniciais
+    // Iniciais -> Azul-petróleo suave
+    return '#1A5660';
   };
 
   return (
-    <Card>
+    <Card className="h-full flex flex-col justify-between">
       <CardHeader>
         <div>
-          <CardTitle>Funil Comercial (10 Etapas)</CardTitle>
+          <CardTitle>Funil Comercial</CardTitle>
           <CardDescription>
             Distribuição de oportunidades em cada estágio do processo comercial
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="h-72 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              layout="vertical"
-              margin={{ top: 5, right: 30, left: 45, bottom: 5 }}
-            >
-              <XAxis type="number" stroke="#797878" fontSize={11} allowDecimals={false} hide />
-              <YAxis
-                dataKey="stage"
-                type="category"
-                stroke="#1A0E12"
-                fontSize={11}
-                tickLine={false}
-                axisLine={false}
-                width={100}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#FFFFFF',
-                  borderColor: '#D8D6D7',
-                  borderRadius: '10px',
-                  boxShadow: '0 4px 16px rgba(44, 1, 7, 0.08)',
-                  fontSize: '12px',
-                  color: '#1A0E12',
-                }}
-                formatter={(value: any) => [`${value} prospects`, 'Volume']}
-              />
-              <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={13}>
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`funnel-cell-${index}`}
-                    fill={getStageColor(entry.stage, entry.fill)}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+      <CardContent className="flex-1 flex flex-col justify-center">
+        {!hasData ? (
+          <div className="h-72 w-full flex items-center justify-center">
+            <EmptyState
+              kind="empty"
+              compact
+              title="Nenhuma oportunidade no funil"
+              description="Cadastre ou atualize oportunidades para visualizar seu funil."
+              action={
+                <Link href="/leads">
+                  <Button variant="primary" size="sm">
+                    <Users className="w-3.5 h-3.5 mr-1" />
+                    Ver meus leads
+                  </Button>
+                </Link>
+              }
+            />
+          </div>
+        ) : (
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={data}
+                layout="vertical"
+                margin={{ top: 5, right: 30, left: 45, bottom: 5 }}
+              >
+                <XAxis type="number" stroke="#71838A" fontSize={11} allowDecimals={false} hide />
+                <YAxis
+                  dataKey="stage"
+                  type="category"
+                  stroke="#182A2F"
+                  fontSize={11}
+                  tickLine={false}
+                  axisLine={false}
+                  width={110}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#FFFFFF',
+                    borderColor: '#DCE5E8',
+                    borderRadius: '10px',
+                    boxShadow: '0 4px 16px rgba(16, 59, 69, 0.08)',
+                    fontSize: '12px',
+                    color: '#182A2F',
+                  }}
+                  formatter={(value: any) => [`${value} prospects`, 'Volume']}
+                />
+                <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={14}>
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`funnel-cell-${index}`}
+                      fill={getStageColor(entry.stage, entry.fill)}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

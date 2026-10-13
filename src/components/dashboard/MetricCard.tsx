@@ -16,7 +16,7 @@ export interface MetricCardProps {
     value?: string;
   };
   icon?: React.ReactNode;
-  /** Se `highlightGrowth` for true, o valor numérico recebe tom cherry vibrante indicando resultado positivo */
+  /** Se `highlightGrowth` for true, o valor numérico recebe tom verde indicando resultado positivo */
   highlightGrowth?: boolean;
 }
 

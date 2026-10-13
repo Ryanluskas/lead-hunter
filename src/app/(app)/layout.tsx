@@ -59,21 +59,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               className="fixed inset-0 bg-lh-overlay backdrop-blur-xs"
               onClick={() => setMobileMenuOpen(false)}
             />
-            <div className="relative w-72 bg-lh-sidebar text-lh-text-inverse h-full p-4 flex flex-col justify-between shadow-lh-elevated z-10 border-r border-[#550416]/40">
+            <div className="relative w-72 bg-lh-sidebar text-lh-text-inverse h-full p-4 flex flex-col justify-between shadow-lh-elevated z-10 border-r border-white/10">
               <div>
-                <div className="flex items-center justify-between pb-4 border-b border-[#550416]/40">
+                <div className="flex items-center justify-between pb-4 border-b border-white/10">
                   <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lh-md bg-lh-sidebar-active text-lh-accent flex items-center justify-center font-bold border border-lh-accent/30">
                       <Compass className="w-4 h-4 text-lh-accent" />
                     </div>
                     <div>
                       <span className="font-semibold text-sm text-white">{BRAND.name}</span>
-                      <span className="block text-[10px] text-[#D8D6D7]">Inteligência Comercial</span>
+                      <span className="block text-[10px] text-white/60">Inteligência Comercial</span>
                     </div>
                   </div>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
-                    className="p-1.5 text-[#D8D6D7] hover:text-white rounded-lh-sm"
+                    className="p-1.5 text-white/70 hover:text-white rounded-lh-sm"
                     aria-label="Fechar menu"
                   >
                     <X className="w-5 h-5" />
@@ -93,10 +93,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                           'flex items-center gap-3 px-3 py-2 rounded-lh-md text-[13px] font-medium transition-colors',
                           isActive
                             ? 'bg-lh-sidebar-active text-white font-semibold'
-                            : 'text-[#D8D6D7] hover:bg-lh-sidebar-hover hover:text-white'
+                            : 'text-white/70 hover:bg-lh-sidebar-hover hover:text-white'
                         )}
                       >
-                        <Icon className={cn('w-4 h-4', isActive ? 'text-lh-accent' : 'text-[#ABABAB]')} />
+                        <Icon className={cn('w-4 h-4', isActive ? 'text-lh-accent' : 'text-white/40')} />
                         <span>{item.name}</span>
                       </Link>
                     );
@@ -104,7 +104,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#550416]/40">
+              <div className="pt-4 border-t border-white/10">
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);

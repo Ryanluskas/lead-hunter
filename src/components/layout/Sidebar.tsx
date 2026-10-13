@@ -58,7 +58,6 @@ const navGroups: NavGroup[] = [
       { name: 'Tarefas', href: '/tarefas', icon: CheckSquare },
       { name: 'Propostas', href: '/ia?tab=proposal', icon: FileText },
       { name: 'Vendas', href: '/vendas', icon: DollarSign },
-      { name: 'Sala de Receita', href: '/sala-de-receita', icon: Sparkles, badge: 'LIVE' },
     ],
   },
   {
@@ -84,13 +83,13 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
   return (
     <motion.aside
       animate={{ width: collapsed ? 76 : 248 }}
-      transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
-      className="hidden md:flex flex-col bg-lh-sidebar text-lh-text-inverse h-screen sticky top-0 z-30 select-none shadow-[2px_0_12px_rgba(44,1,7,0.25)] shrink-0 border-r border-[#550416]/40"
+      transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+      className="hidden md:flex flex-col bg-lh-sidebar text-lh-text-inverse h-screen sticky top-0 z-30 select-none shrink-0 border-r border-[#174B55] shadow-xs"
     >
       {/* Top Brand Logo */}
-      <div className="h-16 px-4 flex items-center justify-between border-b border-[#550416]/40 shrink-0">
+      <div className="h-16 px-4 flex items-center justify-between border-b border-[#174B55] shrink-0">
         <Link href="/dashboard" className="flex items-center gap-3 overflow-hidden">
-          <div className="w-9 h-9 rounded-lh-md bg-lh-sidebar-active text-lh-accent flex items-center justify-center font-bold shrink-0 shadow-sm border border-lh-accent/30">
+          <div className="w-9 h-9 rounded-lh-md bg-[#174B55] text-lh-accent flex items-center justify-center font-bold shrink-0 border border-lh-accent/30">
             <Compass className="w-5 h-5 text-lh-accent" />
           </div>
           {!collapsed && (
@@ -103,7 +102,7 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
                   PRO
                 </span>
               </div>
-              <span className="text-[11px] text-[#D8D6D7] truncate">
+              <span className="text-[11px] text-[#BED7DC] truncate">
                 Inteligência Comercial
               </span>
             </div>
@@ -111,7 +110,7 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
         </Link>
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-1.5 text-[#D8D6D7] hover:text-white hover:bg-lh-sidebar-hover rounded-lh-sm transition-colors cursor-pointer"
+          className="p-1.5 text-[#BED7DC] hover:text-white hover:bg-lh-sidebar-hover rounded-lh-sm transition-colors cursor-pointer"
           title={collapsed ? 'Expandir Menu' : 'Recolher Menu'}
           aria-label={collapsed ? 'Expandir Menu' : 'Recolher Menu'}
         >
@@ -124,7 +123,7 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
         {navGroups.map((group) => (
           <div key={group.label} className="space-y-1">
             {!collapsed && (
-              <p className="px-3 text-[10px] font-semibold text-[#ABABAB] uppercase tracking-wider">
+              <p className="px-3 text-[10px] font-semibold text-[#71838A] uppercase tracking-wider">
                 {group.label}
               </p>
             )}
@@ -147,23 +146,23 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
                     'group relative flex items-center gap-3 px-3 py-2 rounded-lh-md text-[13px] font-medium transition-colors',
                     isActive
                       ? 'bg-lh-sidebar-active text-white font-semibold'
-                      : 'text-[#D8D6D7] hover:bg-lh-sidebar-hover hover:text-white'
+                      : 'text-[#BED7DC] hover:bg-lh-sidebar-hover hover:text-white'
                   )}
                   title={collapsed ? item.name : undefined}
                 >
                   <Icon
                     className={cn(
                       'w-4 h-4 shrink-0 transition-colors',
-                      isActive ? 'text-lh-accent' : 'text-[#ABABAB] group-hover:text-white'
+                      isActive ? 'text-lh-accent' : 'text-[#8BA4AB] group-hover:text-white'
                     )}
                   />
                   {!collapsed && <span className="truncate flex-1">{item.name}</span>}
 
-                  {/* Indicador fino em cereja vibrante para item ativo */}
+                  {/* Indicador fino em verde de crescimento para item ativo */}
                   {isActive && (
                     <motion.div
                       layoutId="sidebarActiveIndicator"
-                      className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-lh-accent rounded-r-sm shadow-[0_0_8px_#C42759]"
+                      className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-lh-accent rounded-r-sm"
                     />
                   )}
                 </Link>
@@ -173,36 +172,33 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
         ))}
       </nav>
 
-      {/* Footer: Rodapé executivo com Tutoriais e Perfil */}
-      <div className="p-3 border-t border-[#550416]/40 shrink-0 space-y-1.5 bg-[#200105]">
+      {/* Footer: Rodapé executivo */}
+      <div className="p-3 border-t border-[#174B55] shrink-0 space-y-1.5 bg-[#0C2D35]">
         {onOpenTutorial && (
           <button
             onClick={onOpenTutorial}
             className={cn(
-              'w-full flex items-center gap-2.5 px-3 py-1.5 text-xs font-medium rounded-lh-md text-[#D8D6D7] hover:text-white hover:bg-lh-sidebar-hover transition-colors cursor-pointer',
+              'w-full flex items-center gap-2.5 px-3 py-2 text-xs text-[#BED7DC] hover:text-white hover:bg-lh-sidebar-hover rounded-lh-md transition-colors cursor-pointer',
               collapsed && 'justify-center px-0'
             )}
-            title="Tutoriais de Prospecção"
+            title="Vídeos Rápidos de Treinamento"
           >
             <Video className="w-4 h-4 text-lh-accent shrink-0" />
-            {!collapsed && <span className="truncate text-[12px]">Tutoriais de Vendas</span>}
+            {!collapsed && <span>Guia de Prospecção</span>}
           </button>
         )}
 
         <div
           className={cn(
-            'flex items-center gap-2.5 px-2 py-1.5 rounded-lh-md',
+            'flex items-center gap-2.5 px-3 py-2 text-xs text-[#BED7DC]',
             collapsed && 'justify-center px-0'
           )}
         >
-          <div className="w-7 h-7 rounded-full bg-lh-sidebar-active border border-lh-accent/50 text-white flex items-center justify-center font-bold text-xs shrink-0">
-            LH
-          </div>
+          <div className="w-2 h-2 rounded-full bg-lh-accent shrink-0" />
           {!collapsed && (
-            <div className="flex flex-col min-w-0">
-              <span className="text-xs font-medium text-white truncate">Consultor Lead Hunter</span>
-              <span className="text-[10px] text-[#ABABAB] truncate">Online • Prospecção</span>
-            </div>
+            <span className="text-[11px] text-[#8BA4AB] truncate">
+              Google Maps & Gemini Ativos
+            </span>
           )}
         </div>
       </div>

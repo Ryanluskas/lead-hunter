@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,273 +6,110 @@
 
 /*
  * ============================================================
- *  CODE MAKERS + CODE HUNTER — Design System & Tokens Oficiais
- *  Paleta:
- *  - --brand-red: #b00000
- *  - --brand-red-bright: #ff5a5a
- *  - --brand-red-soft: #ffd6d6
- *  - --brand-red-deep: #520000
- *  - --brand-red-ink: #160000
+ *  LEAD HUNTER — Design System Oficial
+ *  Identidade: Executive Clean • Petroleum Blue • Growth Green
+ *  Fonte única da verdade de tokens visuais.
  * ============================================================
  */
 :root {
-  /* Brand Tokens Oficiais */
-  --brand-red: #b00000;
-  --brand-red-bright: #ff5a5a;
-  --brand-red-soft: #ffd6d6;
-  --brand-red-deep: #520000;
-  --brand-red-ink: #160000;
+  /* Fundo e Superfícies */
+  --lh-bg: #F5F8FA;
+  --lh-bg-subtle: #EDF3F5;
+  --lh-surface: #FFFFFF;
+  --lh-surface-alt: #F8FAFB;
 
-  /* HUD Neon / Status */
-  --hud-cyan: #00F0FF;
-  --hud-cyan-glow: rgba(0, 240, 255, 0.45);
-  --hud-red-glow: rgba(176, 0, 0, 0.55);
+  /* Sidebar Executiva (Azul-petróleo profundo) */
+  --lh-sidebar: #103B45;
+  --lh-sidebar-hover: #174B55;
+  --lh-sidebar-active: #1A5660;
 
-  /* Mapeamento Lead Hunter / Code Hunter App */
-  --lh-primary: #b00000;
-  --lh-primary-hover: #8f0000;
-  --lh-primary-active: #520000;
-  --lh-primary-soft: rgba(255, 90, 90, 0.12);
-  --lh-primary-border: rgba(255, 90, 90, 0.35);
-  --lh-primary-text: #ff5a5a;
+  /* Primária Institucional (Azul-petróleo equilibrado) */
+  --lh-primary: #145866;
+  --lh-primary-hover: #0F4753;
+  --lh-primary-active: #0A3943;
+  --lh-primary-soft: #E8F2F4;
+  --lh-primary-border: #BED7DC;
+  --lh-primary-text: #104753;
 
-  --lh-accent: #ff5a5a;
-  --lh-accent-hover: #ff7575;
-  --lh-accent-active: #b00000;
-  --lh-accent-soft: rgba(255, 90, 90, 0.15);
-  --lh-accent-border: rgba(255, 90, 90, 0.4);
-  --lh-accent-text: #ff5a5a;
+  /* Destaque Comercial & Resultados (Verde de crescimento) */
+  --lh-accent: #16845B;
+  --lh-accent-hover: #116B49;
+  --lh-accent-active: #0D563A;
+  --lh-accent-soft: #E8F6EF;
+  --lh-accent-border: #B6E3CA;
 
-  --lh-success: #169B62;
-  --lh-success-text: #169B62;
-  --lh-success-soft: rgba(22, 155, 98, 0.12);
+  /* Tipografia Executiva de Alto Contraste */
+  --lh-text: #182A2F;
+  --lh-text-secondary: #52656B;
+  --lh-text-muted: #71838A;
+  --lh-text-inverse: #FFFFFF;
 
-  /* Superfícies & Fundos Dark Ruby / Obsidian */
-  --lh-bg: #090103;
-  --lh-bg-subtle: #120205;
-  --lh-surface: #150307;
-  --lh-surface-alt: #1c050b;
-  --lh-sidebar: #0a0103;
-  --lh-sidebar-hover: #190308;
-  --lh-sidebar-active: #29040d;
-  --lh-input: #170409;
+  /* Bordas Suaves e Estruturais */
+  --lh-border: #DCE5E8;
+  --lh-border-strong: #C5D3D8;
 
-  /* Tipografia */
-  --lh-text: #FFFFFF;
-  --lh-text-secondary: #D4D4D8;
-  --lh-text-muted: #8E8D92;
-  --lh-text-inverse: #090103;
+  /* Cores Semânticas de Status */
+  --lh-success: #16845B;
+  --lh-success-text: #11633F;
+  --lh-success-soft: #E8F6EF;
 
-  /* Bordas High-Tech */
-  --lh-border: #3A0812;
-  --lh-border-strong: #590B1B;
+  --lh-warning: #946200;
+  --lh-warning-soft: #FFF5D9;
 
-  /* Status */
-  --lh-warning: #FFB020;
-  --lh-warning-soft: rgba(255, 176, 32, 0.12);
-  --lh-danger: #ff5a5a;
-  --lh-danger-soft: rgba(255, 90, 90, 0.12);
-  --lh-info: #00F0FF;
-  --lh-info-soft: rgba(0, 240, 255, 0.12);
-  --lh-overlay: rgba(10, 1, 3, 0.85);
+  --lh-danger: #B42332;
+  --lh-danger-soft: #FDECEE;
 
-  /* Dimensões & Sombras */
-  --lh-radius-sm: 8px;
-  --lh-radius-md: 14px;
-  --lh-radius-lg: 20px;
-  --lh-radius-xl: 28px;
-  --lh-shadow-card: 0 10px 30px -10px rgba(176, 0, 0, 0.25), 0 0 1px 1px rgba(255, 90, 90, 0.15);
-  --lh-shadow-elevated: 0 20px 40px -15px rgba(176, 0, 0, 0.45), 0 0 0 1px rgba(255, 90, 90, 0.25);
-  --lh-shadow-focus: 0 0 0 3px rgba(255, 90, 90, 0.35);
+  --lh-info: #2D6490;
+  --lh-info-soft: #EAF3FA;
+
+  --lh-overlay: rgba(16, 59, 69, 0.55);
+
+  /* Dimensões, Raios e Sombras Sutis */
+  --lh-radius-sm: 6px;
+  --lh-radius-md: 10px;
+  --lh-radius-lg: 14px;
+  --lh-radius-xl: 18px;
+
+  --lh-shadow-card:
+    0 2px 8px rgb(16 59 69 / 4%),
+    0 1px 2px rgb(16 59 69 / 3%);
+
+  --lh-shadow-elevated:
+    0 12px 32px rgb(16 59 69 / 12%);
+
+  --lh-shadow-focus: 0 0 0 3px rgba(20, 88, 102, 0.2);
+
+  --lh-font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --lh-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --lh-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --lh-font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --lh-font-display: 'Sora', sans-serif;
 }
-
-/* -------------------------------------------------------------
-   ANIMAÇÕES & KEYFRAMES OFICIAIS CODE MAKERS
-   ------------------------------------------------------------- */
-
-@keyframes projects-card-advance {
-  0%, 25% { transform: translate(0px); }
-  31.25%, 50% { transform: translate(-885px); }
-  56.25%, 75% { transform: translate(-1770px); }
-  81.25%, 100% { transform: translate(-2655px); }
-}
-
-@keyframes mobile-brand-marquee {
-  100% { transform: translate(calc(-50% - 6px)); }
-}
-
-@keyframes site-header-arrival {
-  0% { opacity: 0; filter: blur(18px); transform: translateY(-52px); }
-  64% { opacity: 1; filter: blur(2px); }
-  100% { opacity: 1; filter: blur(0px); transform: translate(0px); }
-}
-
-@keyframes hero-robot-arrival {
-  0% { transform: translateY(62%); opacity: 0.2; }
-  76% { transform: translateY(7%); opacity: 0.9; }
-  100% { transform: translate(0px); opacity: 1; }
-}
-
-@keyframes blog-cursor-ring-spin {
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes hero-shadow-drift-a {
-  0%, 100% { opacity: 0.58; transform: translate(-16%, 14%) scale(1.02); }
-  25% { opacity: 1; transform: translate(34%, -16%) scale(0.94); }
-  50% { opacity: 0.7; transform: translate(72%, -26%) scale(1.12); }
-  75% { opacity: 0.96; transform: translate(20%, 6%) scale(1.04); }
-}
-
-@keyframes hero-shadow-drift-b {
-  0%, 100% { opacity: 0.54; transform: translate(16%, -8%) scale(1); }
-  25% { opacity: 0.98; transform: translate(-34%, 18%) scale(1.1); }
-  50% { opacity: 0.66; transform: translate(-70%, 4%) scale(0.94); }
-  75% { opacity: 1; transform: translate(-22%, -18%) scale(1.06); }
-}
-
-@keyframes hero-gradient-drift-a {
-  0%, 100% { opacity: 0.5; transform: translate(-10%, -8%) scale(1); }
-  25% { opacity: 0.64; transform: translate(28%) scale(1.08); }
-  50% { opacity: 0.56; transform: translate(54%, 14%) scale(0.98); }
-  75% { opacity: 0.62; transform: translate(18%, 22%) scale(1.06); }
-}
-
-@keyframes hero-gradient-drift-b {
-  0%, 100% { opacity: 0.46; transform: translate(10%, -3%) scale(1.04); }
-  25% { opacity: 0.58; transform: translate(-22%, 9%) scale(0.96); }
-  50% { opacity: 0.5; transform: translate(-48%, 18%) scale(1.08); }
-  75% { opacity: 0.6; transform: translate(-16%, -8%) scale(1); }
-}
-
-@keyframes card-gradient-deep-blue {
-  0%, 100% { opacity: 0.52; transform: translate(-26%, -18%) scale(1.06); }
-  25% { opacity: 0.78; transform: translate(54%, 18%) scale(1.18); }
-  50% { opacity: 0.58; transform: translate(92%, 52%) scale(0.92); }
-  75% { opacity: 0.74; transform: translate(16%, 78%) scale(1.14); }
-}
-
-@keyframes card-gradient-black-depth {
-  0%, 100% { opacity: 0.48; transform: translate(26%, 32%) scale(1.1); }
-  25% { opacity: 0.72; transform: translate(-42%, -14%) scale(0.9); }
-  50% { opacity: 0.52; transform: translate(-94%, -46%) scale(1.16); }
-  75% { opacity: 0.7; transform: translate(-18%, -82%) scale(1.04); }
-}
-
-@keyframes integrated-ruby-drift {
-  0%, 100% { opacity: 0.72; transform: translate(-14%, -24%) scale(1.04) rotate(-8deg); }
-  25% { opacity: 0.92; transform: translate(44%, 18%) scale(1.16) rotate(4deg); }
-  50% { opacity: 0.76; transform: translate(88%, 56%) scale(0.94) rotate(10deg); }
-  75% { opacity: 0.9; transform: translate(20%, 78%) scale(1.12) rotate(0deg); }
-}
-
-@keyframes integrated-black-drift {
-  0%, 100% { opacity: 0.66; transform: translate(24%, 22%) scale(1.08) rotate(5deg); }
-  25% { opacity: 0.82; transform: translate(-28%, -20%) scale(0.94) rotate(-6deg); }
-  50% { opacity: 0.72; transform: translate(-82%, -48%) scale(1.12) rotate(-12deg); }
-  75% { opacity: 0.84; transform: translate(-14%, -76%) scale(1.02) rotate(-2deg); }
-}
-
-@keyframes conversion-signal-pass {
-  0%, 16% { opacity: 0; transform: translate(0px) skew(-18deg); }
-  26% { opacity: 0.72; }
-  72% { opacity: 0.5; }
-  86%, 100% { opacity: 0; transform: translate(440%) skew(-18deg); }
-}
-
-@keyframes code-hunter-scan {
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes code-hunter-live {
-  0%, 100% { opacity: 0.55; transform: scale(0.82); }
-  50% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes course-code-scan {
-  0%, 12% { opacity: 0; transform: translateY(-120%); }
-  24% { opacity: 1; }
-  76% { opacity: 0.78; }
-  90%, 100% { opacity: 0; transform: translateY(570%); }
-}
-
-@keyframes course-after-drift {
-  0% { transform: translate(-14%, -10%) scale(0.9); }
-  100% { transform: translate(18%, 14%) scale(1.12); }
-}
-
-@keyframes course-offer-gradient-a {
-  0% { opacity: 0.88; transform: translate(-14%, -9%) scale(0.92) rotate(-9deg); }
-  50% { opacity: 1; transform: translate(14%, 13%) scale(1.1) rotate(7deg); }
-  100% { opacity: 0.94; transform: translate(28%, -11%) scale(0.98) rotate(15deg); }
-}
-
-@keyframes course-offer-gradient-b {
-  0% { opacity: 0.76; transform: translate(11%, 8%) scale(1.04) rotate(6deg); }
-  50% { opacity: 1; transform: translate(-10%, -12%) scale(1.14) rotate(-8deg); }
-  100% { opacity: 0.84; transform: translate(-22%, 6%) scale(0.98) rotate(-14deg); }
-}
-
-@keyframes course-orbit-breathe {
-  0% { opacity: 0.55; transform: scale(0.92); }
-  100% { opacity: 0.9; transform: scale(1.08); }
-}
-
-/* -------------------------------------------------------------
-   CLASSES UTILITÁRIAS DE AMBIÊNCIA E ILUMINAÇÃO
-   ------------------------------------------------------------- */
 
 body {
   background-color: var(--lh-bg);
   color: var(--lh-text);
   font-family: var(--lh-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-.font-sora {
-  font-family: 'Sora', sans-serif;
+/* Números tabulares para métricas financeiras */
+.lh-tabular {
+  font-variant-numeric: tabular-nums;
 }
 
-/* Radial Glows de Fundo */
-.ruby-glow-hero {
-  background: radial-gradient(circle at 60% 40%, rgba(176, 0, 0, 0.45) 0%, rgba(82, 0, 0, 0.35) 35%, rgba(22, 0, 0, 0.9) 70%, #090103 100%);
-}
-
-.ruby-glow-hud {
-  box-shadow: 0 0 50px -10px rgba(176, 0, 0, 0.6), inset 0 0 25px rgba(255, 90, 90, 0.15);
-}
-
-.cyan-hud-text {
-  color: var(--hud-cyan);
-  text-shadow: 0 0 15px rgba(0, 240, 255, 0.65), 0 0 30px rgba(0, 240, 255, 0.35);
-}
-
-.glass-ruby-panel {
-  background: rgba(22, 0, 0, 0.75);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 90, 90, 0.2);
-}
-
-.glass-ruby-panel:hover {
-  border-color: rgba(255, 90, 90, 0.45);
-  box-shadow: 0 10px 30px -10px rgba(176, 0, 0, 0.5);
-}
-
-/* Scrollbar Personalizada Dark Ruby */
+/* Scrollbar limpa e discreta */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090103;
+  background: var(--lh-bg-subtle);
 }
 ::-webkit-scrollbar-thumb {
-  background: #520000;
-  border-radius: 4px;
+  background: var(--lh-border-strong);
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b00000;
+  background: var(--lh-text-muted);
 }

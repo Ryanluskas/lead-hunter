@@ -90,23 +90,16 @@ export default function DashboardPage() {
             </button>
           </div>
 
-          <Link href="/sala-de-receita">
-            <button className="px-3 py-1.5 rounded-lh-md bg-gradient-to-r from-[#b00000] to-[#520000] hover:from-[#ff5a5a] hover:to-[#b00000] text-white text-xs font-bold font-mono uppercase tracking-wider flex items-center gap-2 shadow-[0_0_15px_rgba(176,0,0,0.5)] transition-all cursor-pointer">
-              <span className="w-2 h-2 rounded-full bg-[#ff5a5a] animate-ping" />
-              <span>Sala de Receita</span>
-            </button>
-          </Link>
-
           <Link href="/leads/buscar">
             <Button variant="primary" size="sm">
-              <Plus className="w-4 h-4" /> Buscar Empresas
+              <Plus className="w-4 h-4 mr-1.5" /> Buscar Empresas
             </Button>
           </Link>
         </div>
       }
     >
       {/* 6 Indicadores Principais com layout adaptativo que nunca quebra */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-6 gap-3.5 sm:gap-4">
         <MetricCard
           title="Leads hoje"
           value={metrics.leadsFoundToday}
