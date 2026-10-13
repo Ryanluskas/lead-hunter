@@ -1,0 +1,130 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  leads     Lead[]
+}
+
+model Lead {
+  id              String         @id @default(cuid())
+  googlePlaceId   String?        // Place ID referencial conforme ToS do Google Maps
+  businessName    String         // Nome comercial verificado de fonte independente
+  website         String?        // Website verificado
+  websiteStatus   String         @default("none_stated") // "none_stated", "has_website", "needs_redesign", "offline"
+  phone           String?        // Contato independente
+  email           String?        // Contato independente
+  category        String         // Segmento (Ex: "Clínicas", "Dentistas", "Oficinas")
+  city            String         // Cidade
+  state           String         // Estado (Ex: "GO")
+  address         String?        // Endereço verificado independente
+  score           Int            @default(50) // 0-100 pontuação transparente
+  scoreRationale  String?        // Explicação auditável dos fatores da nota
+  status          String         @default("novo") 
+  // Status: "novo", "em_verificacao", "qualificado", "contato_pendente", "contatado", "interessado", "reuniao_agendada", "proposta_enviada", "em_negociacao", "vendido", "perdido"
+  lossReason      String?        // Motivo da perda comercial
+  source          String         @default("Pesquisa Local + Enriquecimento Independente")
+  notes           String?
+  userId          String?
+  user            User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  audits          LeadAudit[]
+  activities      Activity[]
+  tasks           Task[]
+  deals           Deal[]
+  aiGenerations   AiGeneration[]
+}
+
+model LeadAudit {
+  id                String   @id @default(cuid())
+  leadId            String?
+  lead              Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  url               String
+  httpStatus        Int?
+  https             Boolean  @default(false)
+  hasMobileViewport Boolean  @default(false)
+  title             String?
+  metaDescription   String?
+  headingsCount     Int      @default(0)
+  hasContactLink    Boolean  @default(false)
+  hasCta            Boolean  @default(false)
+  loadTimeMs        Int?
+  score             Int      @default(0) // 0 a 100
+  issues            String   @default("[]") // JSON string com os problemas detectados
+  recommendations   String   @default("[]") // JSON string com sugestões
+  createdAt         DateTime @default(now())
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  leadId      String
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type        String   // "ligacao", "whatsapp", "email", "reuniao", "proposta", "nota", "status_change"
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  leadId      String?
+  lead        Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  dueDate     DateTime?
+  completed   Boolean   @default(false)
+  priority    String    @default("media") // "baixa", "media", "alta"
+  createdAt   DateTime  @default(now())
+}
+
+model Deal {
+  id                  String    @id @default(cuid())
+  leadId              String
+  lead                Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  title               String
+  proposalValue       Float     @default(0) // Valor orçado
+  closedValue         Float     @default(0) // Valor contratado fechado
+  receivedValue       Float     @default(0) // Valor efetivamente recebido
+  contractDate        DateTime  @default(now())
+  paymentStatus       String    @default("pendente") // "pendente", "pago_parcial", "pago_total"
+  expectedPaymentDate DateTime?
+  notes               String?
+  createdAt           DateTime  @default(now())
+}
+
+model AiGeneration {
+  id               String   @id @default(cuid())
+  leadId           String?
+  lead             Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type             String   // "mensagem_whatsapp", "mensagem_email", "proposta_comercial", "analise_oportunidade", "quebra_objecoes", "resumo_prospeccao"
+  promptContext    String?
+  generatedContent String
+  modelUsed        String   @default("gemini-3.8-flash")
+  tokensUsed       Int?
+  createdAt        DateTime @default(now())
+}
+
+model IntegrationSetting {
+  id                String    @id @default(cuid())
+  service           String    @unique // "google_maps", "gemini", "audit"
+  status            String    @default("nao_configurado") // "conectado", "nao_configurado", "erro", "demo"
+  lastChecked       DateTime?
+  monthlyUsageCount Int       @default(0)
+  usageLimit        Int       @default(1000)
+  costEstimate      Float     @default(0.0)
+  errorMessage      String?
+  updatedAt         DateTime  @updatedAt
+}

@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * ============================================================
+ *  LEAD HUNTER — Paleta Oficial Crimson Luxury & Silver Ash
+ *  Referência cromática:
+ *  - #2C0107: Deep Black Cherry / Dark Burgundy (Sidebar, superfícies de alto contraste)
+ *  - #550416: Rich Crimson / Imperial Wine (Identidade primária, botões, títulos)
+ *  - #C42759: Vibrant Cherry Blossom / Raspberry (Ações de destaque, KPIs, glow)
+ *  - #D8D6D7: Silver Ash / Light Platinum (Bordas, separadores principais)
+ *  - #C3C3C3: Platinum Gray (Superfícies secundárias, estados desativados)
+ *  - #ABABAB: Medium Silver (Bordas fortes, ícones discretos)
+ *  - #797878: Slate Charcoal (Texto secundário, legendas, metadados)
+ * ============================================================
+ */
+:root {
+  /* Brand - Rich Wine / Crimson (#550416) */
+  --lh-primary: #550416;
+  --lh-primary-hover: #3E040D;
+  --lh-primary-active: #2C0107;
+  --lh-primary-soft: #FBECEF;
+  --lh-primary-border: #E8B8C6;
+  --lh-primary-text: #550416;
+
+  /* Growth & Accent - Vibrant Cherry Blossom (#C42759) */
+  --lh-accent: #C42759;
+  --lh-accent-hover: #A91C49;
+  --lh-accent-active: #8D163C;
+  --lh-accent-soft: #FDF0F5;
+  --lh-accent-border: #F5B8CB;
+  --lh-accent-text: #9B1741;
+  --lh-success: #16845B;
+  --lh-success-text: #11633F;
+  --lh-success-soft: #E8F6EF;
+
+  /* Backgrounds & Surfaces */
+  --lh-bg: #F7F6F7;
+  --lh-bg-subtle: #ECE9EB;
+  --lh-surface: #FFFFFF;
+  --lh-surface-alt: #F5F3F4;
+  --lh-sidebar: #2C0107;
+  --lh-sidebar-hover: #3E040D;
+  --lh-sidebar-active: #550416;
+  --lh-input: #FFFFFF;
+
+  /* Text - High contrast with delicate wine warmth */
+  --lh-text: #1A0E12;
+  --lh-text-secondary: #554E50;
+  --lh-text-muted: #797878;
+  --lh-text-inverse: #FFFFFF;
+
+  /* Borders (#D8D6D7 & #ABABAB) */
+  --lh-border: #D8D6D7;
+  --lh-border-strong: #ABABAB;
+
+  /* Status */
+  --lh-warning: #946200;
+  --lh-warning-soft: #FFF5D9;
+  --lh-danger: #B42332;
+  --lh-danger-soft: #FDECEE;
+  --lh-info: #550416;
+  --lh-info-soft: #FBECEF;
+
+  /* Typography */
+  --lh-font-sans: var(--font-inter), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --lh-font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+
+  /* Radius */
+  --lh-radius-sm: 6px;
+  --lh-radius-md: 10px;
+  --lh-radius-lg: 14px;
+  --lh-radius-xl: 18px;
+
+  /* Shadows */
+  --lh-shadow-card:
+    0 2px 8px rgb(44 1 7 / 5%),
+    0 1px 2px rgb(44 1 7 / 3%);
+  --lh-shadow-elevated: 0 12px 32px rgb(44 1 7 / 14%);
+  --lh-shadow-focus: 0 0 0 3px rgb(196 39 89 / 22%);
+
+  /* Overlay */
+  --lh-overlay: rgb(44 1 7 / 45%);
+
+  /* Motion */
+  --lh-duration-fast: 140ms;
+  --lh-duration-normal: 200ms;
+  --lh-duration-slow: 280ms;
+  --lh-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--lh-bg);
+  color: var(--lh-text);
+  font-family: var(--lh-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  color: var(--lh-text-inverse);
+  background: var(--lh-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--lh-accent);
+  outline-offset: 3px;
+}
+
+a {
+  color: var(--lh-primary);
+}
+
+a:hover {
+  color: var(--lh-accent);
+}
+
+/* Números tabulares para valores financeiros e indicadores */
+.lh-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scrollbars discretas */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--lh-border-strong);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--lh-text-muted);
+  background-clip: padding-box;
+}
+
+/* Skeleton neutro */
+@keyframes lh-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.lh-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--lh-bg-subtle) 25%,
+    var(--lh-surface-alt) 37%,
+    var(--lh-bg-subtle) 63%
+  );
+  background-size: 200% 100%;
+  animation: lh-shimmer 1.4s ease infinite;
+}
+
+/* Impressão de relatórios: remove navegação */
+@media print {
+  .lh-no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}
+
+/* Respeito a preferências de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
