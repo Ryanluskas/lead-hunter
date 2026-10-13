@@ -11,8 +11,9 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { Skeleton } from '@/components/ui/Skeleton';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { ScrollReveal, staggerContainer } from '@/lib/motion';
 import {
   Users,
   CheckCircle2,
@@ -23,7 +24,6 @@ import {
   Clock,
   Plus,
   ArrowRight,
-  Sparkles,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -66,24 +66,24 @@ export default function DashboardPage() {
       description="Acompanhe suas oportunidades e resultados comerciais em tempo real."
       action={
         <div className="flex items-center gap-2.5">
-          {/* Seletor de Período Oficial */}
-          <div className="bg-lh-surface p-1 rounded-lh-md border border-lh-border flex items-center gap-1 text-xs shadow-xs">
+          {/* Seletor de Período Oficial com microinteração Apple */}
+          <div className="bg-lh-surface/90 backdrop-blur-sm p-1 rounded-lh-md border border-lh-border/80 flex items-center gap-1 text-xs shadow-xs">
             <button
               onClick={() => setPeriod('7d')}
-              className={`px-3 py-1.5 rounded-lh-sm font-medium transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lh-sm font-medium transition-all duration-150 cursor-pointer active:scale-95 ${
                 period === '7d'
                   ? 'bg-lh-primary text-white font-semibold shadow-xs'
-                  : 'text-lh-text-secondary hover:text-lh-text'
+                  : 'text-lh-text-secondary hover:text-lh-text hover:bg-lh-bg-subtle/50'
               }`}
             >
               7 dias
             </button>
             <button
               onClick={() => setPeriod('30d')}
-              className={`px-3 py-1.5 rounded-lh-sm font-medium transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lh-sm font-medium transition-all duration-150 cursor-pointer active:scale-95 ${
                 period === '30d'
                   ? 'bg-lh-primary text-white font-semibold shadow-xs'
-                  : 'text-lh-text-secondary hover:text-lh-text'
+                  : 'text-lh-text-secondary hover:text-lh-text hover:bg-lh-bg-subtle/50'
               }`}
             >
               Este Mês
@@ -98,8 +98,13 @@ export default function DashboardPage() {
         </div>
       }
     >
-      {/* 6 Indicadores Principais com layout adaptativo que nunca quebra */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-6 gap-3.5 sm:gap-4">
+      {/* 6 Indicadores Principais com stagger animation coordenada */}
+      <motion.div
+        variants={staggerContainer}
+        initial="initial"
+        animate="animate"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-6 gap-3.5 sm:gap-4"
+      >
         <MetricCard
           title="Leads hoje"
           value={metrics.leadsFoundToday}
@@ -156,39 +161,39 @@ export default function DashboardPage() {
           icon={<TrendingUp className="w-4 h-4 text-lh-primary" />}
           subtitle={`Ticket: ${formatCurrency(metrics.averageTicket)}`}
         />
-      </div>
+      </motion.div>
 
-      {/* Grid de Gráficos 1 & 2 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Grid de Gráficos 1 & 2 com ScrollReveal */}
+      <ScrollReveal className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <TrendChart data={data?.trendData || []} />
         <FunnelChart data={data?.funnelData || []} />
-      </div>
+      </ScrollReveal>
 
-      {/* Grid de Gráficos 3 & 4 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Grid de Gráficos 3 & 4 com ScrollReveal */}
+      <ScrollReveal className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <SegmentChart data={data?.segmentData || []} />
         <RevenueChart
           data={data?.trendData || []}
           totalContracted={metrics.revenueContractedMonth}
           totalReceived={metrics.revenueReceivedMonth}
         />
-      </div>
+      </ScrollReveal>
 
       {/* Seção Inferior: Atividades Recentes & Próximas Tarefas */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <ScrollReveal className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Atividades Recentes */}
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Atividades Recentes</CardTitle>
-              <Link href="/leads" className="text-xs text-lh-primary hover:underline font-medium flex items-center gap-1">
+              <Link href="/leads" className="text-xs text-lh-primary hover:underline font-medium flex items-center gap-1 active:scale-95 transition-transform">
                 Ver todos os leads <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </CardHeader>
-            <CardContent className="divide-y divide-lh-border p-0">
+            <CardContent className="divide-y divide-lh-border/80 p-0">
               {(data?.recentActivities || []).map((act: any) => (
-                <div key={act.id} className="p-4 flex items-start gap-3 hover:bg-lh-surface-alt transition-colors">
-                  <div className="w-8 h-8 rounded-lh-sm bg-lh-primary-soft text-lh-primary flex items-center justify-center shrink-0 mt-0.5 border border-lh-primary-border">
+                <div key={act.id} className="p-4 flex items-start gap-3 hover:bg-lh-surface-alt/70 transition-colors">
+                  <div className="w-8 h-8 rounded-lh-sm bg-lh-primary-soft text-lh-primary flex items-center justify-center shrink-0 mt-0.5 border border-lh-primary-border shadow-xs">
                     <Clock className="w-4 h-4" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -227,7 +232,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Próximas Tarefas</CardTitle>
-              <Link href="/tarefas" className="text-xs text-lh-primary hover:underline font-medium flex items-center gap-1">
+              <Link href="/tarefas" className="text-xs text-lh-primary hover:underline font-medium flex items-center gap-1 active:scale-95 transition-transform">
                 Ver todas <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </CardHeader>
@@ -235,7 +240,7 @@ export default function DashboardPage() {
               {(data?.pendingTasks || []).map((task: any) => (
                 <div
                   key={task.id}
-                  className="p-3 rounded-lh-md bg-lh-surface-alt border border-lh-border hover:border-lh-primary transition-colors"
+                  className="p-3 rounded-lh-md bg-lh-surface-alt/80 border border-lh-border/80 hover:border-lh-primary hover:shadow-xs transition-all duration-150"
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <Badge
@@ -268,7 +273,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </ScrollReveal>
     </PageContainer>
   );
 }

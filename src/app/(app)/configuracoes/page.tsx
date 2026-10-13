@@ -213,7 +213,7 @@ export default function ConfiguracoesPage() {
             onChange={(e) => setSalesGoal(e.target.value)}
           />
 
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" isSuccess={saveSuccess} successText="Salvo!">
             Salvar Preferências
           </Button>
         </form>

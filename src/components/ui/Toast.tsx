@@ -4,6 +4,7 @@ import React, { createContext, useCallback, useContext, useMemo, useRef, useStat
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { AlertTriangle, CheckCircle2, Info, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motionTokens } from '@/lib/motion';
 
 export type ToastTone = 'success' | 'error' | 'info' | 'warning';
 
@@ -35,11 +36,11 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 const toneStyles: Record<ToastTone, { icon: React.ReactNode; className: string }> = {
   success: { icon: <CheckCircle2 className="h-4 w-4 text-lh-success" />, className: 'border-lh-accent-border' },
   error: { icon: <AlertTriangle className="h-4 w-4 text-lh-danger" />, className: 'border-lh-danger' },
-  warning: { icon: <AlertTriangle className="h-4 w-4 text-lh-warning" />, className: 'border-lh-border-strong' },
-  info: { icon: <Info className="h-4 w-4 text-lh-info" />, className: 'border-lh-border-strong' },
+  warning: { icon: <AlertTriangle className="h-4 w-4 text-lh-warning" />, className: 'border-lh-warning' },
+  info: { icon: <Info className="h-4 w-4 text-lh-info" />, className: 'border-lh-info' },
 };
 
-/** Notificações discretas e não bloqueantes (substitui `alert`). */
+/** Notificações discretas, translúcidas estilo Apple e não bloqueantes. */
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const counter = useRef(0);
@@ -82,35 +83,35 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       <div
         aria-live="polite"
         aria-atomic="false"
-        className="pointer-events-none fixed bottom-4 right-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2"
+        className="pointer-events-none fixed bottom-4 right-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm flex-col gap-2.5"
       >
         <AnimatePresence initial={false}>
           {toasts.map((t) => (
             <motion.div
               key={t.id}
               layout={!reduceMotion}
-              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18, ease: [0.2, 0, 0, 1] }}
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.92, transition: { duration: motionTokens.duration.instant } }}
+              transition={{ duration: motionTokens.duration.normal, ease: motionTokens.ease.smooth }}
               role={t.tone === 'error' ? 'alert' : 'status'}
               className={cn(
-                'pointer-events-auto flex items-start gap-3 rounded-lh-md border bg-lh-surface p-3.5 shadow-lh-elevated',
+                'pointer-events-auto flex items-start gap-3 rounded-lh-lg border p-3.5 lh-glass shadow-lh-floating',
                 toneStyles[t.tone].className
               )}
             >
               <span className="mt-0.5 shrink-0">{toneStyles[t.tone].icon}</span>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-lh-text">{t.title}</p>
-                {t.description && <p className="mt-0.5 text-[13px] text-lh-text-secondary">{t.description}</p>}
+                <p className="text-sm font-semibold text-lh-text">{t.title}</p>
+                {t.description && <p className="mt-0.5 text-[12px] text-lh-text-secondary leading-snug">{t.description}</p>}
               </div>
               <button
                 type="button"
                 onClick={() => dismiss(t.id)}
                 aria-label="Dispensar notificação"
-                className="shrink-0 rounded-lh-sm p-0.5 text-lh-text-muted hover:bg-lh-bg-subtle hover:text-lh-text"
+                className="shrink-0 rounded-lh-sm p-1 text-lh-text-muted hover:bg-lh-bg-subtle hover:text-lh-text transition-colors active:scale-90"
               >
-                <X className="h-4 w-4" />
+                <X className="h-3.5 w-3.5" />
               </button>
             </motion.div>
           ))}

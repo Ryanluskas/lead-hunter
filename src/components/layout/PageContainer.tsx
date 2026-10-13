@@ -1,5 +1,9 @@
+'use client';
+
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { pageVariants } from '@/lib/motion';
 
 export interface PageContainerProps {
   title: string;
@@ -16,9 +20,17 @@ export function PageContainer({
   children,
   className,
 }: PageContainerProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <div className={cn('p-4 sm:p-6 md:p-8 max-w-[1536px] w-full mx-auto space-y-6', className)}>
-      {/* Header da Página conforme hierarquia */}
+    <motion.div
+      variants={reduceMotion ? undefined : pageVariants}
+      initial={reduceMotion ? undefined : 'initial'}
+      animate={reduceMotion ? undefined : 'animate'}
+      exit={reduceMotion ? undefined : 'exit'}
+      className={cn('p-4 sm:p-6 md:p-8 max-w-[1536px] w-full mx-auto space-y-6', className)}
+    >
+      {/* Header da Página com tipografia e espaçamento executivo */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
         <div>
           <h1 className="text-[26px] sm:text-[30px] font-semibold tracking-tight text-lh-text">
@@ -30,11 +42,15 @@ export function PageContainer({
             </p>
           )}
         </div>
-        {action && <div className="flex items-center gap-2.5 shrink-0">{action}</div>}
+        {action && (
+          <div className="flex items-center gap-2.5 shrink-0">
+            {action}
+          </div>
+        )}
       </div>
 
       {/* Conteúdo Principal */}
       <div>{children}</div>
-    </div>
+    </motion.div>
   );
 }

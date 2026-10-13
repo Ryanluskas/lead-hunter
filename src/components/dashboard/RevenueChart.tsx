@@ -32,7 +32,7 @@ export function RevenueChart({ data, totalContracted, totalReceived }: RevenueCh
     (Array.isArray(data) && data.length > 0 && data.some((d) => (d.revenue || 0) > 0));
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card className="h-full flex flex-col justify-between hover:shadow-lh-soft transition-all duration-200">
       <CardHeader>
         <div>
           <CardTitle>Evolução do Faturamento</CardTitle>
@@ -94,7 +94,7 @@ export function RevenueChart({ data, totalContracted, totalReceived }: RevenueCh
                     backgroundColor: '#FFFFFF',
                     borderColor: '#DCE5E8',
                     borderRadius: '10px',
-                    boxShadow: '0 4px 16px rgba(16, 59, 69, 0.08)',
+                    boxShadow: '0 8px 24px rgba(16, 59, 69, 0.08)',
                     fontSize: '12px',
                     color: '#182A2F',
                   }}
@@ -106,6 +106,8 @@ export function RevenueChart({ data, totalContracted, totalReceived }: RevenueCh
                   fill="#16845B"
                   radius={[4, 4, 0, 0]}
                   barSize={18}
+                  animationDuration={850}
+                  animationEasing="ease-out"
                 />
               </BarChart>
             </ResponsiveContainer>

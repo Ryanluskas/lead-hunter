@@ -2,20 +2,22 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Ativa hover elevado — use apenas em cartões clicáveis. */
+  /** Ativa hover elevado suave — use em cartões clicáveis ou itens de lista. */
   interactive?: boolean;
   /** Remove o padding padrão (útil para tabelas e gráficos de borda a borda). */
   flush?: boolean;
+  /** Superfície translúcida Apple Glassmorphism */
+  glass?: boolean;
 }
 
-export function Card({ className, interactive, flush, children, ...props }: CardProps) {
+export function Card({ className, interactive, flush, glass, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'rounded-lh-lg border border-lh-border bg-lh-surface shadow-lh-card',
+        'rounded-lh-lg border transition-all duration-200',
+        glass ? 'lh-glass' : 'bg-lh-surface border-lh-border shadow-lh-card',
         !flush && 'p-5 sm:p-6',
-        interactive &&
-          'cursor-pointer transition-[box-shadow,border-color] duration-lh-normal ease-lh hover:border-lh-border-strong hover:shadow-lh-elevated',
+        interactive && 'lh-card-interactive cursor-pointer',
         className
       )}
       {...props}
@@ -35,7 +37,7 @@ export function CardHeader({ className, children, ...props }: React.HTMLAttribut
 
 export function CardTitle({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={cn('text-sm font-medium text-lh-text', className)} {...props}>
+    <h3 className={cn('text-sm font-semibold text-lh-text tracking-tight', className)} {...props}>
       {children}
     </h3>
   );
@@ -43,7 +45,7 @@ export function CardTitle({ className, children, ...props }: React.HTMLAttribute
 
 export function CardDescription({ className, children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
-    <p className={cn('mt-0.5 text-[13px] text-lh-text-muted', className)} {...props}>
+    <p className={cn('mt-0.5 text-[13px] text-lh-text-muted leading-relaxed', className)} {...props}>
       {children}
     </p>
   );

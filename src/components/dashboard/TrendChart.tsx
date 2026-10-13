@@ -33,7 +33,7 @@ export function TrendChart({ data }: TrendChartProps) {
     data.some((d) => (d.leads || 0) > 0 || (d.sales || 0) > 0 || (d.revenue || 0) > 0);
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card className="h-full flex flex-col justify-between hover:shadow-lh-soft transition-all duration-200">
       <CardHeader>
         <div>
           <CardTitle>Evolução Comercial</CardTitle>
@@ -96,7 +96,7 @@ export function TrendChart({ data }: TrendChartProps) {
                     backgroundColor: '#FFFFFF',
                     borderColor: '#DCE5E8',
                     borderRadius: '10px',
-                    boxShadow: '0 4px 16px rgba(16, 59, 69, 0.08)',
+                    boxShadow: '0 8px 24px rgba(16, 59, 69, 0.08)',
                     fontSize: '12px',
                     color: '#182A2F',
                   }}
@@ -120,6 +120,8 @@ export function TrendChart({ data }: TrendChartProps) {
                   fillOpacity={1}
                   fill="url(#lhColorLeads)"
                   name="leads"
+                  animationDuration={850}
+                  animationEasing="ease-out"
                 />
                 <Area
                   type="monotone"
@@ -129,6 +131,8 @@ export function TrendChart({ data }: TrendChartProps) {
                   fillOpacity={1}
                   fill="url(#lhColorSales)"
                   name="sales"
+                  animationDuration={950}
+                  animationEasing="ease-out"
                 />
               </AreaChart>
             </ResponsiveContainer>

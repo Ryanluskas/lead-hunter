@@ -21,6 +21,8 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { staggerContainer } from '@/lib/motion';
 
 export default function SearchPlacesPage() {
   const router = useRouter();
@@ -269,7 +271,12 @@ export default function SearchPlacesPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <motion.div
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            >
               {results.map((place) => (
                 <PlacesResultCard
                   key={place.id}
@@ -278,7 +285,7 @@ export default function SearchPlacesPage() {
                   onAuditWebsite={handleAuditWebsite}
                 />
               ))}
-            </div>
+            </motion.div>
 
             {results.length === 0 && !loading && (
               <EmptyState

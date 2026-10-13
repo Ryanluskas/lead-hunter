@@ -127,7 +127,7 @@ export function KanbanBoard({
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{ duration: 0.15 }}
-                    className="bg-lh-surface rounded-xl border border-lh-border p-3.5 shadow-lh-card hover:shadow-lh-elevated transition-all flex flex-col justify-between group"
+                    className="bg-lh-surface rounded-xl border border-lh-border/80 p-3.5 shadow-lh-card lh-card-interactive flex flex-col justify-between group"
                   >
                     <div>
                       {/* Categoria e Score */}

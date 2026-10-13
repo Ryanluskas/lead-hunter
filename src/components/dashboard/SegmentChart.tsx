@@ -32,7 +32,7 @@ export function SegmentChart({ data }: SegmentChartProps) {
     data.some((d) => (d.leads || 0) > 0 || (d.sales || 0) > 0);
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card className="h-full flex flex-col justify-between hover:shadow-lh-soft transition-all duration-200">
       <CardHeader>
         <div>
           <CardTitle>Desempenho por Segmento / Nicho</CardTitle>
@@ -83,7 +83,7 @@ export function SegmentChart({ data }: SegmentChartProps) {
                     backgroundColor: '#FFFFFF',
                     borderColor: '#DCE5E8',
                     borderRadius: '10px',
-                    boxShadow: '0 4px 16px rgba(16, 59, 69, 0.08)',
+                    boxShadow: '0 8px 24px rgba(16, 59, 69, 0.08)',
                     fontSize: '12px',
                     color: '#182A2F',
                   }}
@@ -100,6 +100,8 @@ export function SegmentChart({ data }: SegmentChartProps) {
                   fill="#145866"
                   radius={[4, 4, 0, 0]}
                   barSize={16}
+                  animationDuration={850}
+                  animationEasing="ease-out"
                 />
                 <Bar
                   dataKey="sales"
@@ -107,6 +109,8 @@ export function SegmentChart({ data }: SegmentChartProps) {
                   fill="#16845B"
                   radius={[4, 4, 0, 0]}
                   barSize={16}
+                  animationDuration={950}
+                  animationEasing="ease-out"
                 />
               </BarChart>
             </ResponsiveContainer>

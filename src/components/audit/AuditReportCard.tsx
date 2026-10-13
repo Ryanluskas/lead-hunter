@@ -5,6 +5,7 @@ import { WebsiteAuditResult } from '@/lib/site-auditor';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { AnimatedNumber } from '@/lib/motion';
 import {
   ShieldAlert,
   AlertTriangle,
@@ -39,7 +40,7 @@ export function AuditReportCard({
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <Badge variant={getScoreVariant(audit.score)} size="md">
-                Nota Técnica: {audit.score}/100
+                Nota Técnica: <AnimatedNumber value={audit.score} className="ml-1 font-bold" />/100
               </Badge>
               <span className="text-xs text-lh-text-muted">
                 {audit.score < 60

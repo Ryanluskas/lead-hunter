@@ -4,6 +4,7 @@ import React, { useEffect, useId, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { modalVariants, backdropVariants, motionTokens } from '@/lib/motion';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -57,15 +58,18 @@ export function Modal({ isOpen, onClose, title, description, children, footer, m
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:items-center sm:p-6">
+          {/* Backdrop translúcido Apple macOS */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
+            variants={backdropVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
             onClick={onClose}
-            className="fixed inset-0 bg-lh-overlay"
+            className="fixed inset-0 bg-lh-overlay backdrop-blur-sm"
             aria-hidden="true"
           />
+
+          {/* Painel do Modal */}
           <motion.div
             ref={panelRef}
             role="dialog"
@@ -73,25 +77,25 @@ export function Modal({ isOpen, onClose, title, description, children, footer, m
             aria-labelledby={title ? titleId : undefined}
             aria-describedby={description ? descId : undefined}
             tabIndex={-1}
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
-            transition={{ duration: 0.22, ease: [0.2, 0, 0, 1] }}
+            variants={reduceMotion ? undefined : modalVariants}
+            initial={reduceMotion ? { opacity: 0 } : 'initial'}
+            animate={reduceMotion ? { opacity: 1 } : 'animate'}
+            exit={reduceMotion ? { opacity: 0 } : 'exit'}
             className={cn(
-              'relative z-10 my-8 w-full overflow-hidden rounded-lh-xl border border-lh-border bg-lh-surface shadow-lh-elevated focus:outline-none',
+              'relative z-10 my-8 w-full overflow-hidden rounded-lh-xl border border-lh-border/80 bg-lh-surface shadow-lh-floating focus:outline-none',
               maxWidthClasses[maxWidth]
             )}
           >
             {(title || description) && (
-              <div className="flex items-start justify-between gap-4 border-b border-lh-border px-6 py-4">
+              <div className="flex items-start justify-between gap-4 border-b border-lh-border/80 px-6 py-4">
                 <div className="min-w-0">
                   {title && (
-                    <h2 id={titleId} className="text-lg font-semibold text-lh-text">
+                    <h2 id={titleId} className="text-lg font-semibold text-lh-text tracking-tight">
                       {title}
                     </h2>
                   )}
                   {description && (
-                    <p id={descId} className="mt-0.5 text-[13px] text-lh-text-muted">
+                    <p id={descId} className="mt-0.5 text-[13px] text-lh-text-muted leading-relaxed">
                       {description}
                     </p>
                   )}
@@ -100,7 +104,7 @@ export function Modal({ isOpen, onClose, title, description, children, footer, m
                   type="button"
                   onClick={onClose}
                   aria-label="Fechar"
-                  className="-mr-1 rounded-lh-sm p-1.5 text-lh-text-muted transition-colors duration-lh-fast hover:bg-lh-bg-subtle hover:text-lh-text"
+                  className="-mr-1 rounded-lh-sm p-1.5 text-lh-text-muted transition-colors duration-lh-fast hover:bg-lh-bg-subtle hover:text-lh-text active:scale-95"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -108,7 +112,7 @@ export function Modal({ isOpen, onClose, title, description, children, footer, m
             )}
             <div className="px-6 py-5">{children}</div>
             {footer && (
-              <div className="flex items-center justify-end gap-3 border-t border-lh-border bg-lh-surface-alt px-6 py-4">
+              <div className="flex items-center justify-end gap-3 border-t border-lh-border/80 bg-lh-surface-alt/70 px-6 py-4">
                 {footer}
               </div>
             )}
@@ -141,12 +145,12 @@ export function SidePanel({ isOpen, onClose, title, description, children, foote
       {isOpen && (
         <div className="fixed inset-0 z-50 flex justify-end">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
+            variants={backdropVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
             onClick={onClose}
-            className="fixed inset-0 bg-lh-overlay"
+            className="fixed inset-0 bg-lh-overlay backdrop-blur-sm"
             aria-hidden="true"
           />
           <motion.aside
@@ -155,19 +159,19 @@ export function SidePanel({ isOpen, onClose, title, description, children, foote
             aria-modal="true"
             aria-labelledby={title ? titleId : undefined}
             tabIndex={-1}
-            initial={reduceMotion ? { opacity: 0 } : { x: 32, opacity: 0 }}
+            initial={reduceMotion ? { opacity: 0 } : { x: '100%', opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={reduceMotion ? { opacity: 0 } : { x: 32, opacity: 0 }}
-            transition={{ duration: 0.24, ease: [0.2, 0, 0, 1] }}
+            exit={reduceMotion ? { opacity: 0 } : { x: '100%', opacity: 0 }}
+            transition={{ duration: motionTokens.duration.normal, ease: motionTokens.ease.smooth }}
             className={cn(
-              'relative z-10 flex h-full w-full flex-col border-l border-lh-border bg-lh-surface shadow-lh-elevated focus:outline-none',
+              'relative z-10 flex h-full w-full flex-col border-l border-lh-border bg-lh-surface shadow-lh-floating focus:outline-none',
               width === 'lg' ? 'sm:max-w-xl' : 'sm:max-w-md'
             )}
           >
             <div className="flex items-start justify-between gap-4 border-b border-lh-border px-6 py-4">
               <div className="min-w-0">
                 {title && (
-                  <h2 id={titleId} className="truncate text-lg font-semibold text-lh-text">
+                  <h2 id={titleId} className="truncate text-lg font-semibold text-lh-text tracking-tight">
                     {title}
                   </h2>
                 )}
@@ -177,14 +181,14 @@ export function SidePanel({ isOpen, onClose, title, description, children, foote
                 type="button"
                 onClick={onClose}
                 aria-label="Fechar painel"
-                className="-mr-1 rounded-lh-sm p-1.5 text-lh-text-muted transition-colors duration-lh-fast hover:bg-lh-bg-subtle hover:text-lh-text"
+                className="-mr-1 rounded-lh-sm p-1.5 text-lh-text-muted transition-colors duration-lh-fast hover:bg-lh-bg-subtle hover:text-lh-text active:scale-95"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
             {footer && (
-              <div className="flex items-center justify-end gap-3 border-t border-lh-border bg-lh-surface-alt px-6 py-4">
+              <div className="flex items-center justify-end gap-3 border-t border-lh-border bg-lh-surface-alt/70 px-6 py-4">
                 {footer}
               </div>
             )}

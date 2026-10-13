@@ -8,10 +8,7 @@ import {
   TrendingUp,
   Clock,
   CheckCircle2,
-  Calendar,
-  Sparkles,
   BarChart3,
-  Building2,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -27,6 +24,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { BRAND } from '@/lib/brand';
 import { formatCurrency } from '@/lib/utils';
+import { AnimatedNumber } from '@/lib/motion';
 
 // Horários com receita acumulada no dia
 const initialHourlyData = [
@@ -84,14 +82,14 @@ export default function SalaDeReceitaPage() {
   return (
     <div className="min-h-screen bg-lh-bg text-lh-text selection:bg-lh-primary-soft selection:text-lh-primary font-sans">
       {/* ------------------------------------------------------------- */}
-      {/* CABEÇALHO EXECUTIVO                                           */}
+      {/* CABEÇALHO EXECUTIVO TRANSLÚCIDO                               */}
       {/* ------------------------------------------------------------- */}
-      <header className="bg-lh-surface border-b border-lh-border sticky top-0 z-20">
+      <header className="lh-glass border-b border-lh-border/80 sticky top-0 z-30 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               href="/dashboard"
-              className="p-2 rounded-lh-sm text-lh-text-secondary hover:text-lh-text hover:bg-lh-surface-alt transition-colors"
+              className="p-2 rounded-lh-sm text-lh-text-secondary hover:text-lh-text hover:bg-lh-surface-alt transition-colors active:scale-95"
               title="Voltar ao Dashboard"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -100,6 +98,7 @@ export default function SalaDeReceitaPage() {
               <h1 className="text-base sm:text-lg font-bold text-lh-text flex items-center gap-2">
                 Monitor de Receita em Tempo Real
                 <Badge variant="success" size="sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-lh-accent animate-pulse mr-1" />
                   Ao Vivo
                 </Badge>
               </h1>
@@ -108,7 +107,7 @@ export default function SalaDeReceitaPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-1.5 text-xs text-lh-text-secondary bg-lh-surface-alt px-3 py-1.5 rounded-lh-md border border-lh-border">
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-lh-text-secondary bg-lh-surface-alt/70 px-3 py-1.5 rounded-lh-md border border-lh-border/80 shadow-xs">
               <Clock className="w-3.5 h-3.5 text-lh-primary" />
               <span>{currentTime}</span>
             </div>
@@ -125,7 +124,7 @@ export default function SalaDeReceitaPage() {
 
       {/* Alerta de notificação temporária */}
       {recentNotification && (
-        <div className="bg-lh-accent text-white px-4 py-2.5 text-center text-xs font-semibold shadow-xs flex items-center justify-center gap-2 animate-fadeIn">
+        <div className="bg-lh-accent text-white px-4 py-2.5 text-center text-xs font-semibold shadow-xs flex items-center justify-center gap-2 animate-in fade-in duration-200">
           <CheckCircle2 className="w-4 h-4" />
           <span>{recentNotification}</span>
         </div>
@@ -135,9 +134,9 @@ export default function SalaDeReceitaPage() {
       {/* CONTEÚDO PRINCIPAL                                            */}
       {/* ------------------------------------------------------------- */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        {/* 4 KPIs de Receita */}
+        {/* 4 KPIs de Receita com AnimatedNumber */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-5">
+          <Card className="p-5 lh-card-interactive">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-lh-text-secondary">Faturamento Fechado Hoje</span>
               <div className="p-1.5 rounded-lh-md bg-lh-accent-soft text-lh-accent">
@@ -145,12 +144,12 @@ export default function SalaDeReceitaPage() {
               </div>
             </div>
             <p className="text-2xl sm:text-3xl font-extrabold text-lh-accent mt-3 lh-tabular">
-              {formatCurrency(totalRevenue)}
+              <AnimatedNumber value={totalRevenue} isCurrency />
             </p>
             <span className="text-[11px] text-lh-text-muted mt-1 block">Receita confirmada do dia</span>
           </Card>
 
-          <Card className="p-5">
+          <Card className="p-5 lh-card-interactive">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-lh-text-secondary">Contratos Fechados Hoje</span>
               <div className="p-1.5 rounded-lh-md bg-lh-primary-soft text-lh-primary">
@@ -158,12 +157,12 @@ export default function SalaDeReceitaPage() {
               </div>
             </div>
             <p className="text-2xl sm:text-3xl font-extrabold text-lh-text mt-3 lh-tabular">
-              {salesCount}
+              <AnimatedNumber value={salesCount} />
             </p>
             <span className="text-[11px] text-lh-text-muted mt-1 block">Assinaturas e confirmações</span>
           </Card>
 
-          <Card className="p-5">
+          <Card className="p-5 lh-card-interactive">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-lh-text-secondary">Ticket Médio</span>
               <div className="p-1.5 rounded-lh-md bg-lh-bg-subtle text-lh-text-secondary">
@@ -171,12 +170,12 @@ export default function SalaDeReceitaPage() {
               </div>
             </div>
             <p className="text-2xl sm:text-3xl font-extrabold text-lh-text mt-3 lh-tabular">
-              {formatCurrency(avgTicket)}
+              <AnimatedNumber value={avgTicket} isCurrency />
             </p>
             <span className="text-[11px] text-lh-text-muted mt-1 block">Por oportunidade ganha</span>
           </Card>
 
-          <Card className="p-5">
+          <Card className="p-5 lh-card-interactive">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-lh-text-secondary">Status de Operação</span>
               <div className="p-1.5 rounded-lh-md bg-lh-accent-soft text-lh-accent">
@@ -189,7 +188,7 @@ export default function SalaDeReceitaPage() {
         </div>
 
         {/* Gráfico de Evolução ao Longo do Dia */}
-        <Card>
+        <Card className="hover:shadow-lh-soft transition-all duration-200">
           <CardHeader>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
@@ -228,7 +227,7 @@ export default function SalaDeReceitaPage() {
                       backgroundColor: '#FFFFFF',
                       borderColor: '#DCE5E8',
                       borderRadius: '10px',
-                      boxShadow: '0 4px 16px rgba(16, 59, 69, 0.08)',
+                      boxShadow: '0 8px 24px rgba(16, 59, 69, 0.08)',
                       fontSize: '12px',
                       color: '#182A2F',
                     }}
@@ -241,6 +240,8 @@ export default function SalaDeReceitaPage() {
                     strokeWidth={2.5}
                     fillOpacity={1}
                     fill="url(#revenueGrowth)"
+                    animationDuration={850}
+                    animationEasing="ease-out"
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -249,15 +250,15 @@ export default function SalaDeReceitaPage() {
         </Card>
 
         {/* Transações Recentes Confirmadas */}
-        <Card>
+        <Card className="hover:shadow-lh-soft transition-all duration-200">
           <CardHeader>
             <CardTitle>Últimas Oportunidades Ganhas</CardTitle>
             <CardDescription>Transações registradas recentemente no sistema</CardDescription>
           </CardHeader>
-          <CardContent className="divide-y divide-lh-border p-0">
-            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt transition-colors">
+          <CardContent className="divide-y divide-lh-border/80 p-0">
+            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt/70 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold shadow-xs">
                   <CheckCircle2 className="w-4 h-4" />
                 </div>
                 <div>
@@ -271,9 +272,9 @@ export default function SalaDeReceitaPage() {
               </div>
             </div>
 
-            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt transition-colors">
+            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt/70 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold shadow-xs">
                   <CheckCircle2 className="w-4 h-4" />
                 </div>
                 <div>
@@ -287,9 +288,9 @@ export default function SalaDeReceitaPage() {
               </div>
             </div>
 
-            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt transition-colors">
+            <div className="p-4 flex items-center justify-between hover:bg-lh-surface-alt/70 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-lh-sm bg-lh-accent-soft text-lh-accent flex items-center justify-center font-bold shadow-xs">
                   <CheckCircle2 className="w-4 h-4" />
                 </div>
                 <div>

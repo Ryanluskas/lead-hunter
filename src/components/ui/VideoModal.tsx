@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Modal } from './Modal';
-import { Play, BookOpen, Search, ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Play, BookOpen, Search, ShieldCheck, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
 import { Badge } from './Badge';
 import { brandConfig } from '@/lib/brand';
 
@@ -88,6 +88,8 @@ export function VideoTutorialModal({
 }) {
   const [selectedId, setSelectedId] = useState(initialTutorialId);
   const activeTutorial = tutorials.find((t) => t.id === selectedId) || tutorials[0];
+  const currentIndex = tutorials.findIndex((t) => t.id === activeTutorial.id);
+  const nextTutorial = currentIndex >= 0 && currentIndex < tutorials.length - 1 ? tutorials[currentIndex + 1] : null;
 
   return (
     <Modal
@@ -99,7 +101,7 @@ export function VideoTutorialModal({
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         {/* Lista lateral de tutoriais */}
-        <div className="md:col-span-5 space-y-2 border-r border-lh-border-subtle pr-0 md:pr-4">
+        <div className="md:col-span-5 space-y-2 border-r border-lh-border/80 pr-0 md:pr-4">
           <p className="text-xs font-semibold text-lh-text-muted uppercase tracking-wider mb-2">
             Módulos de Aprendizado
           </p>
@@ -109,14 +111,14 @@ export function VideoTutorialModal({
               <button
                 key={tut.id}
                 onClick={() => setSelectedId(tut.id)}
-                className={`w-full text-left p-3 rounded-xl transition-all cursor-pointer flex items-start gap-3 ${
+                className={`w-full text-left p-3 rounded-xl transition-all duration-150 cursor-pointer flex items-start gap-3 active:scale-98 ${
                   isSelected
-                    ? 'bg-lh-primary-soft/80 border border-lh-primary-border shadow-xs'
-                    : 'hover:bg-lh-surface-alt border border-transparent'
+                    ? 'bg-lh-primary-soft/90 border border-lh-primary-border shadow-xs'
+                    : 'hover:bg-lh-surface-alt/70 border border-transparent'
                 }`}
               >
                 <div
-                  className={`p-2 rounded-lg transition-colors ${
+                  className={`p-2 rounded-lg transition-colors shrink-0 shadow-xs ${
                     isSelected ? 'bg-lh-primary text-white' : 'bg-lh-surface-alt text-lh-text-muted'
                   }`}
                 >
@@ -140,18 +142,21 @@ export function VideoTutorialModal({
         <div className="md:col-span-7 flex flex-col justify-between">
           <div>
             {/* Player visual preparado para MP4/WebM com alternativa interativa */}
-            <div className="relative aspect-video bg-[#0D282F] rounded-xl overflow-hidden shadow-inner flex flex-col items-center justify-center text-white p-6 border border-lh-sidebar">
+            <div className="relative aspect-video bg-[#0D282F] rounded-xl overflow-hidden shadow-lh-card flex flex-col items-center justify-center text-white p-6 border border-[#174B55]">
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
 
-              {/* Botão de reprodução simulada */}
+              {/* Botão de reprodução simulada com microinteração Apple */}
               <div className="relative z-10 text-center">
-                <div className="w-14 h-14 bg-lh-primary hover:bg-lh-primary-hover rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg hover:scale-105 transition-all cursor-pointer">
-                  <Play className="w-6 h-6 text-white ml-0.5" />
-                </div>
+                <button
+                  type="button"
+                  className="w-14 h-14 bg-lh-primary hover:bg-lh-primary-hover active:scale-90 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lh-elevated transition-all cursor-pointer group"
+                >
+                  <Play className="w-6 h-6 text-white ml-0.5 group-hover:scale-110 transition-transform" />
+                </button>
                 <Badge variant="primary" size="sm" className="bg-white/20 text-white border-white/20 mb-2">
-                  Tutorial Interativo • {activeTutorial.duration}
+                  Tutorial Prático • {activeTutorial.duration}
                 </Badge>
-                <h4 className="text-sm font-semibold text-white px-4">
+                <h4 className="text-sm font-semibold text-white px-4 leading-snug">
                   {activeTutorial.title}
                 </h4>
               </div>
@@ -160,7 +165,7 @@ export function VideoTutorialModal({
               <div className="absolute bottom-3 left-4 right-4 flex items-center gap-2 text-[10px] text-gray-300">
                 <span className="lh-tabular">00:00</span>
                 <div className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden">
-                  <div className="w-1/3 h-full bg-lh-primary" />
+                  <div className="w-1/3 h-full bg-lh-accent" />
                 </div>
                 <span className="lh-tabular">{activeTutorial.duration}</span>
               </div>
@@ -175,7 +180,7 @@ export function VideoTutorialModal({
                 {activeTutorial.description}
               </p>
 
-              <div className="bg-lh-surface-alt p-3.5 rounded-xl border border-lh-border-subtle space-y-2">
+              <div className="bg-lh-surface-alt/80 p-3.5 rounded-xl border border-lh-border/80 space-y-2 shadow-xs">
                 <p className="text-xs font-semibold text-lh-text flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5 text-lh-primary" /> Roteiro Prático:
                 </p>
@@ -189,13 +194,29 @@ export function VideoTutorialModal({
                 </div>
               </div>
 
-              <div className="mt-3 p-2.5 bg-lh-primary-soft/60 rounded-lg border border-lh-primary-border flex items-start gap-2 text-xs text-lh-primary-text">
+              <div className="mt-3 p-2.5 bg-lh-primary-soft/70 rounded-lg border border-lh-primary-border flex items-start gap-2 text-xs text-lh-primary-text">
                 <Sparkles className="w-4 h-4 shrink-0 mt-0.5 text-lh-primary" />
                 <div>
                   <span className="font-semibold">Ponto-chave: </span>
                   {activeTutorial.keyTakeaway}
                 </div>
               </div>
+
+              {/* Sugestão de próximo tutorial conforme Seção 14 */}
+              {nextTutorial && (
+                <div className="mt-4 pt-3 border-t border-lh-border/80 flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] text-lh-text-muted uppercase font-semibold block">Próxima Aula</span>
+                    <p className="text-xs font-semibold text-lh-text truncate max-w-[240px]">{nextTutorial.title}</p>
+                  </div>
+                  <button
+                    onClick={() => setSelectedId(nextTutorial.id)}
+                    className="px-3 py-1.5 rounded-lh-sm bg-lh-surface border border-lh-border text-xs font-medium text-lh-primary hover:bg-lh-surface-alt transition-colors active:scale-95 flex items-center gap-1"
+                  >
+                    Avançar <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
+import { AnimatedNumber, motionTokens } from '@/lib/motion';
 
 export interface MetricCardProps {
   title: string;
@@ -30,17 +31,19 @@ export function MetricCard({
 }: MetricCardProps) {
   const reduceMotion = useReducedMotion();
   const valStr = String(value);
+  const isCurrency = valStr.includes('R$');
+  const isPercent = valStr.endsWith('%');
 
   return (
     <motion.div
-      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 6 }}
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.18, ease: [0.2, 0, 0, 1] }}
+      transition={{ duration: motionTokens.duration.normal, ease: motionTokens.ease.smooth }}
       className="h-full"
     >
       <Card
         flush
-        className="p-4 sm:p-4.5 xl:p-4 2xl:p-5 h-full flex flex-col justify-between transition-all duration-lh-fast hover:border-lh-border-strong hover:shadow-lh-card overflow-hidden"
+        className="p-4 sm:p-4.5 xl:p-4 2xl:p-5 h-full flex flex-col justify-between lh-card-interactive overflow-hidden"
       >
         <div>
           {/* Top Header: Título e Ícone */}
@@ -49,13 +52,13 @@ export function MetricCard({
               {title}
             </p>
             {icon && (
-              <div className="p-1.5 rounded-lh-md bg-lh-bg-subtle text-lh-primary shrink-0 border border-lh-border/80">
+              <div className="p-1.5 rounded-lh-md bg-lh-bg-subtle/80 text-lh-primary shrink-0 border border-lh-border/80 shadow-xs">
                 {icon}
               </div>
             )}
           </div>
 
-          {/* Indicador principal com ajuste dinâmico de fonte para nunca quebrar ou estourar */}
+          {/* Indicador principal animado suavemente estilo Apple */}
           <div className="mt-2.5 flex items-baseline gap-1.5 min-w-0">
             <h2
               className={cn(
@@ -69,7 +72,11 @@ export function MetricCard({
               )}
               title={valStr}
             >
-              {value}
+              <AnimatedNumber
+                value={value}
+                isCurrency={isCurrency}
+                suffix={isPercent ? '%' : ''}
+              />
             </h2>
           </div>
         </div>
@@ -81,7 +88,7 @@ export function MetricCard({
               <>
                 <span
                   className={cn(
-                    'inline-flex items-center gap-0.5 font-semibold px-1.5 py-0.5 rounded-lh-sm text-[10px] shrink-0',
+                    'inline-flex items-center gap-0.5 font-semibold px-1.5 py-0.5 rounded-lh-sm text-[10px] shrink-0 transition-transform active:scale-95',
                     comparison.trend === 'up' && 'text-lh-accent bg-lh-accent-soft border border-lh-accent-border',
                     comparison.trend === 'down' && 'text-lh-danger bg-lh-danger-soft border border-lh-danger/20',
                     comparison.trend === 'neutral' && 'text-lh-text-muted bg-lh-bg-subtle border border-lh-border'

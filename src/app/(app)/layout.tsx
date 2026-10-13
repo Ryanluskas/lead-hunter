@@ -7,6 +7,7 @@ import { VideoTutorialModal } from '@/components/ui/VideoModal';
 import { ToastProvider } from '@/components/ui/Toast';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
   MapPin,
@@ -25,6 +26,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BRAND } from '@/lib/brand';
+import { motionTokens } from '@/lib/motion';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [tutorialOpen, setTutorialOpen] = useState(false);
@@ -52,72 +54,84 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Desktop Sidebar */}
         <Sidebar onOpenTutorial={() => setTutorialOpen(true)} />
 
-        {/* Mobile Drawer */}
-        {mobileMenuOpen && (
-          <div className="fixed inset-0 z-50 md:hidden flex">
-            <div
-              className="fixed inset-0 bg-lh-overlay backdrop-blur-xs"
-              onClick={() => setMobileMenuOpen(false)}
-            />
-            <div className="relative w-72 bg-lh-sidebar text-lh-text-inverse h-full p-4 flex flex-col justify-between shadow-lh-elevated z-10 border-r border-white/10">
-              <div>
-                <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lh-md bg-lh-sidebar-active text-lh-accent flex items-center justify-center font-bold border border-lh-accent/30">
-                      <Compass className="w-4 h-4 text-lh-accent" />
+        {/* Mobile Drawer com AnimatePresence e Backdrop Apple */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <div className="fixed inset-0 z-50 md:hidden flex">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: motionTokens.duration.fast }}
+                className="fixed inset-0 bg-lh-overlay backdrop-blur-sm"
+                onClick={() => setMobileMenuOpen(false)}
+              />
+              <motion.div
+                initial={{ x: -288 }}
+                animate={{ x: 0 }}
+                exit={{ x: -288 }}
+                transition={{ duration: motionTokens.duration.normal, ease: motionTokens.ease.smooth }}
+                className="relative w-72 bg-lh-sidebar text-lh-text-inverse h-full p-4 flex flex-col justify-between shadow-lh-floating z-10 border-r border-white/10"
+              >
+                <div>
+                  <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lh-md bg-lh-sidebar-active text-lh-accent flex items-center justify-center font-bold border border-lh-accent/30">
+                        <Compass className="w-4 h-4 text-lh-accent" />
+                      </div>
+                      <div>
+                        <span className="font-semibold text-sm text-white">{BRAND.name}</span>
+                        <span className="block text-[10px] text-white/60">Inteligência Comercial</span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="font-semibold text-sm text-white">{BRAND.name}</span>
-                      <span className="block text-[10px] text-white/60">Inteligência Comercial</span>
-                    </div>
+                    <button
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="p-1.5 text-white/70 hover:text-white rounded-lh-sm transition-colors active:scale-90"
+                      aria-label="Fechar menu"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
                   </div>
+
+                  <div className="mt-4 space-y-1 max-h-[calc(100vh-180px)] overflow-y-auto">
+                    {mobileNav.map((item) => {
+                      const isActive = pathname === item.href.split('?')[0].split('#')[0];
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={cn(
+                            'flex items-center gap-3 px-3 py-2 rounded-lh-md text-[13px] font-medium transition-colors',
+                            isActive
+                              ? 'bg-lh-sidebar-active text-white font-semibold'
+                              : 'text-white/70 hover:bg-lh-sidebar-hover hover:text-white'
+                          )}
+                        >
+                          <Icon className={cn('w-4 h-4', isActive ? 'text-lh-accent' : 'text-white/40')} />
+                          <span>{item.name}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-white/10">
                   <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-1.5 text-white/70 hover:text-white rounded-lh-sm"
-                    aria-label="Fechar menu"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setTutorialOpen(true);
+                    }}
+                    className="w-full py-2 text-xs font-semibold text-white bg-lh-sidebar-active hover:bg-lh-sidebar-hover border border-lh-accent/40 rounded-lh-md transition-colors active:scale-98"
                   >
-                    <X className="w-5 h-5" />
+                    Assistir aos Tutoriais em Vídeo
                   </button>
                 </div>
-
-                <div className="mt-4 space-y-1 max-h-[calc(100vh-180px)] overflow-y-auto">
-                  {mobileNav.map((item) => {
-                    const isActive = pathname === item.href.split('?')[0].split('#')[0];
-                    const Icon = item.icon;
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={cn(
-                          'flex items-center gap-3 px-3 py-2 rounded-lh-md text-[13px] font-medium transition-colors',
-                          isActive
-                            ? 'bg-lh-sidebar-active text-white font-semibold'
-                            : 'text-white/70 hover:bg-lh-sidebar-hover hover:text-white'
-                        )}
-                      >
-                        <Icon className={cn('w-4 h-4', isActive ? 'text-lh-accent' : 'text-white/40')} />
-                        <span>{item.name}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-white/10">
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setTutorialOpen(true);
-                  }}
-                  className="w-full py-2 text-xs font-semibold text-white bg-lh-sidebar-active hover:bg-lh-sidebar-hover border border-lh-accent/40 rounded-lh-md transition-colors"
-                >
-                  Assistir aos Tutoriais em Vídeo
-                </button>
-              </div>
+              </motion.div>
             </div>
-          </div>
-        )}
+          )}
+        </AnimatePresence>
 
         {/* Main App Content */}
         <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">

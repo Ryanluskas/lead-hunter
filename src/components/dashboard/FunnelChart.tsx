@@ -28,7 +28,7 @@ export function FunnelChart({ data }: FunnelChartProps) {
   const totalCount = Array.isArray(data) ? data.reduce((acc, curr) => acc + (curr.count || 0), 0) : 0;
   const hasData = totalCount > 0;
 
-  const getStageColor = (stage: string, fallback?: string) => {
+  const getStageColor = (stage: string) => {
     const s = stage.toLowerCase();
     // Venda / Ganho -> Verde crescimento oficial
     if (s.includes('venda') || s.includes('ganho') || s.includes('fechad') || s.includes('conclu')) {
@@ -51,7 +51,7 @@ export function FunnelChart({ data }: FunnelChartProps) {
   };
 
   return (
-    <Card className="h-full flex flex-col justify-between">
+    <Card className="h-full flex flex-col justify-between hover:shadow-lh-soft transition-all duration-200">
       <CardHeader>
         <div>
           <CardTitle>Funil Comercial</CardTitle>
@@ -101,17 +101,23 @@ export function FunnelChart({ data }: FunnelChartProps) {
                     backgroundColor: '#FFFFFF',
                     borderColor: '#DCE5E8',
                     borderRadius: '10px',
-                    boxShadow: '0 4px 16px rgba(16, 59, 69, 0.08)',
+                    boxShadow: '0 8px 24px rgba(16, 59, 69, 0.08)',
                     fontSize: '12px',
                     color: '#182A2F',
                   }}
                   formatter={(value: any) => [`${value} prospects`, 'Volume']}
                 />
-                <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={14}>
+                <Bar
+                  dataKey="count"
+                  radius={[0, 4, 4, 0]}
+                  barSize={14}
+                  animationDuration={800}
+                  animationEasing="ease-out"
+                >
                   {data.map((entry, index) => (
                     <Cell
                       key={`funnel-cell-${index}`}
-                      fill={getStageColor(entry.stage, entry.fill)}
+                      fill={getStageColor(entry.stage)}
                     />
                   ))}
                 </Bar>

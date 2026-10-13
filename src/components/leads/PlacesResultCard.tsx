@@ -18,7 +18,7 @@ export function PlacesResultCard({
   onAuditWebsite,
 }: PlacesResultCardProps) {
   return (
-    <div className="bg-lh-surface rounded-lh-lg border border-lh-border p-5 shadow-lh-card hover:border-lh-border-strong hover:shadow-lh-elevated transition-all flex flex-col justify-between">
+    <div className="bg-lh-surface rounded-lh-lg border border-lh-border/80 p-5 shadow-lh-card lh-card-interactive flex flex-col justify-between">
       <div>
         {/* Top Badges: Categoria e Situação do Site */}
         <div className="flex items-start justify-between gap-2 mb-2.5">
@@ -30,8 +30,8 @@ export function PlacesResultCard({
             size="sm"
           >
             {place.hasWebsiteReported
-              ? 'Site informado na ficha'
-              : 'Site não informado (A verificar)'}
+              ? 'Site informado'
+              : 'Sem site informado'}
           </Badge>
         </div>
 
@@ -90,14 +90,14 @@ export function PlacesResultCard({
       </div>
 
       {/* Botões de Ação */}
-      <div className="mt-5 pt-3.5 border-t border-lh-border flex flex-wrap items-center justify-between gap-2">
+      <div className="mt-5 pt-3.5 border-t border-lh-border/80 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
           {place.googleMapsUri && (
             <a
               href={place.googleMapsUri}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-lh-text-muted hover:text-lh-text hover:bg-lh-bg-subtle rounded-lh-sm transition-colors"
+              className="p-2 text-lh-text-muted hover:text-lh-text hover:bg-lh-bg-subtle rounded-lh-sm transition-colors active:scale-95"
               title="Abrir no Google Maps oficial"
             >
               <ExternalLink className="w-4 h-4" />
@@ -106,7 +106,7 @@ export function PlacesResultCard({
           {place.websiteUri && onAuditWebsite && (
             <button
               onClick={() => onAuditWebsite(place.websiteUri!)}
-              className="px-2.5 py-1.5 text-xs text-lh-primary-text bg-lh-primary-soft hover:bg-lh-border-strong rounded-lh-sm font-medium flex items-center gap-1 transition-colors cursor-pointer"
+              className="px-2.5 py-1.5 text-xs text-lh-primary-text bg-lh-primary-soft hover:bg-lh-border-strong rounded-lh-sm font-medium flex items-center gap-1 transition-all duration-150 cursor-pointer active:scale-95"
               title="Auditar tecnicamente este website"
             >
               <ShieldCheck className="w-3.5 h-3.5" /> Auditar Site

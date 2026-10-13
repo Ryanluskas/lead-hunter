@@ -3,19 +3,18 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
   Bell,
   Menu,
   CheckCircle2,
   PlugZap,
-  User,
   ShieldCheck,
   Video,
-  AlertCircle,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
+import { dropdownVariants } from '@/lib/motion';
 
 export interface HeaderProps {
   onOpenTutorial?: () => void;
@@ -56,12 +55,12 @@ export function Header({ onOpenTutorial, onToggleMobileMenu }: HeaderProps) {
   };
 
   return (
-    <header className="h-16 bg-lh-surface border-b border-lh-border px-4 sm:px-6 flex items-center justify-between sticky top-0 z-20 shadow-xs">
+    <header className="h-16 lh-glass border-b border-lh-border/80 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 transition-all">
       {/* Mobile Toggle & Search */}
       <div className="flex items-center gap-3 flex-1 max-w-xl">
         <button
           onClick={onToggleMobileMenu}
-          className="md:hidden p-2 text-lh-text-secondary hover:text-lh-text hover:bg-lh-bg-subtle rounded-lh-sm cursor-pointer"
+          className="md:hidden p-2 text-lh-text-secondary hover:text-lh-text hover:bg-lh-bg-subtle rounded-lh-sm cursor-pointer transition-colors active:scale-95"
           aria-label="Abrir menu"
         >
           <Menu className="w-5 h-5" />
@@ -75,7 +74,7 @@ export function Header({ onOpenTutorial, onToggleMobileMenu }: HeaderProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Buscar empresas, telefones, cidades ou notas..."
-            className="w-full pl-9 pr-4 py-2 text-xs bg-lh-surface-alt border border-lh-border rounded-lh-md text-lh-text placeholder:text-lh-text-muted focus:bg-lh-surface focus:border-lh-primary focus:outline-none focus:shadow-lh-focus transition-all"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-lh-surface-alt/80 border border-lh-border/80 rounded-lh-md text-lh-text placeholder:text-lh-text-muted focus:bg-lh-surface focus:border-lh-primary focus:outline-none focus:shadow-lh-focus transition-all"
           />
         </form>
       </div>
@@ -85,14 +84,14 @@ export function Header({ onOpenTutorial, onToggleMobileMenu }: HeaderProps) {
         {/* Status das Integrações Reais */}
         <Link
           href="/configuracoes#integracoes"
-          className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border border-lh-border bg-lh-surface-alt hover:bg-lh-bg-subtle transition-colors text-xs text-lh-text-secondary"
+          className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full border border-lh-border/80 bg-lh-surface-alt/70 hover:bg-lh-bg-subtle transition-all duration-150 text-xs text-lh-text-secondary hover:border-lh-border-strong active:scale-98"
           title="Verificar saúde das APIs e cotas"
         >
           <PlugZap className="w-3.5 h-3.5 text-lh-primary" />
           <span className="text-[12px] font-medium">APIs:</span>
           {integrationsStatus.mapsOk ? (
             <span className="flex items-center gap-1 text-[11px] font-medium text-lh-success">
-              <span className="w-1.5 h-1.5 rounded-full bg-lh-accent" /> Maps Ativo
+              <span className="w-1.5 h-1.5 rounded-full bg-lh-accent animate-pulse" /> Maps Ativo
             </span>
           ) : integrationsStatus.demoMode ? (
             <span className="flex items-center gap-1 text-[11px] font-medium text-lh-primary-text">
@@ -109,7 +108,7 @@ export function Header({ onOpenTutorial, onToggleMobileMenu }: HeaderProps) {
         {onOpenTutorial && (
           <button
             onClick={onOpenTutorial}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-lh-text-secondary hover:text-lh-primary hover:bg-lh-primary-soft rounded-lh-md transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-lh-text-secondary hover:text-lh-primary hover:bg-lh-primary-soft rounded-lh-md transition-all duration-150 cursor-pointer active:scale-95"
             title="Abrir Central de Tutoriais"
           >
             <Video className="w-4 h-4 text-lh-primary" />
@@ -121,7 +120,7 @@ export function Header({ onOpenTutorial, onToggleMobileMenu }: HeaderProps) {
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="p-2 text-lh-text-secondary hover:text-lh-text hover:bg-lh-bg-subtle rounded-lh-sm transition-colors relative cursor-pointer"
+            className="p-2 text-lh-text-secondary hover:text-lh-text hover:bg-lh-bg-subtle rounded-lh-sm transition-all duration-150 relative cursor-pointer active:scale-95"
             title="Notificações Comerciais"
             aria-label="Notificações"
           >
@@ -129,49 +128,57 @@ export function Header({ onOpenTutorial, onToggleMobileMenu }: HeaderProps) {
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-lh-accent rounded-full ring-2 ring-white" />
           </button>
 
-          {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 bg-lh-surface rounded-lh-xl border border-lh-border shadow-lh-elevated p-4 z-50">
-              <div className="flex items-center justify-between pb-3 border-b border-lh-border">
-                <h4 className="text-xs font-semibold text-lh-text">Notificações Comerciais</h4>
-                <Badge variant="primary" size="sm">Recentes</Badge>
-              </div>
-              <div className="py-2 space-y-2 text-xs">
-                <div className="p-2.5 rounded-lh-md bg-lh-success-soft border border-lh-accent-border flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-lh-success shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-lh-text">Oportunidade Qualificada</p>
-                    <p className="text-[11px] text-lh-text-secondary">Novos prospects verificados aguardam abordagem.</p>
+          <AnimatePresence>
+            {showNotifications && (
+              <motion.div
+                variants={dropdownVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="absolute right-0 mt-2 w-80 bg-lh-surface/95 backdrop-blur-md rounded-lh-xl border border-lh-border/80 shadow-lh-floating p-4 z-50"
+              >
+                <div className="flex items-center justify-between pb-3 border-b border-lh-border/80">
+                  <h4 className="text-xs font-semibold text-lh-text">Notificações Comerciais</h4>
+                  <Badge variant="primary" size="sm">Recentes</Badge>
+                </div>
+                <div className="py-2 space-y-2 text-xs">
+                  <div className="p-2.5 rounded-lh-md bg-lh-success-soft/90 border border-lh-accent-border flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-lh-success shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-lh-text">Oportunidade Qualificada</p>
+                      <p className="text-[11px] text-lh-text-secondary leading-snug">Novos prospects verificados aguardam abordagem.</p>
+                    </div>
+                  </div>
+                  <div className="p-2.5 rounded-lh-md bg-lh-bg-subtle/90 border border-lh-border/80 flex items-start gap-2">
+                    <ShieldCheck className="w-4 h-4 text-lh-primary shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-lh-text">Auditoria Concluída</p>
+                      <p className="text-[11px] text-lh-text-secondary leading-snug">Diagnóstico técnico com proteção SSRF ativo.</p>
+                    </div>
                   </div>
                 </div>
-                <div className="p-2.5 rounded-lh-md bg-lh-bg-subtle border border-lh-border flex items-start gap-2">
-                  <ShieldCheck className="w-4 h-4 text-lh-primary shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-lh-text">Auditoria Concluída</p>
-                    <p className="text-[11px] text-lh-text-secondary">Diagnóstico técnico com proteção SSRF ativo.</p>
-                  </div>
+                <div className="pt-2 border-t border-lh-border/80 text-center">
+                  <Link
+                    href="/tarefas"
+                    onClick={() => setShowNotifications(false)}
+                    className="text-[11px] font-medium text-lh-primary hover:underline"
+                  >
+                    Ver todas as tarefas e follow-ups →
+                  </Link>
                 </div>
-              </div>
-              <div className="pt-2 border-t border-lh-border text-center">
-                <Link
-                  href="/tarefas"
-                  onClick={() => setShowNotifications(false)}
-                  className="text-[11px] font-medium text-lh-primary hover:underline"
-                >
-                  Ver todas as tarefas e follow-ups →
-                </Link>
-              </div>
-            </div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Perfil Executivo do Usuário */}
         <div className="relative">
           <button
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center gap-2 pl-2 cursor-pointer focus:outline-none"
+            className="flex items-center gap-2 pl-2 cursor-pointer focus:outline-none active:scale-98 transition-transform"
             aria-label="Menu do usuário"
           >
-            <div className="w-8 h-8 rounded-full bg-lh-primary text-white flex items-center justify-center font-bold text-xs ring-2 ring-lh-primary-soft">
+            <div className="w-8 h-8 rounded-full bg-lh-primary text-white flex items-center justify-center font-bold text-xs ring-2 ring-lh-primary-soft shadow-xs">
               LH
             </div>
             <div className="hidden xl:flex flex-col text-left">
@@ -180,35 +187,43 @@ export function Header({ onOpenTutorial, onToggleMobileMenu }: HeaderProps) {
             </div>
           </button>
 
-          {showUserMenu && (
-            <div className="absolute right-0 mt-2 w-48 bg-lh-surface rounded-lh-xl border border-lh-border shadow-lh-elevated py-2 z-50 text-xs">
-              <div className="px-4 py-2 border-b border-lh-border">
-                <p className="font-semibold text-lh-text">Equipe Comercial</p>
-                <p className="text-[11px] text-lh-text-muted">Lead Hunter</p>
-              </div>
-              <Link
-                href="/configuracoes"
-                onClick={() => setShowUserMenu(false)}
-                className="block px-4 py-2 text-lh-text-secondary hover:bg-lh-surface-alt hover:text-lh-text"
+          <AnimatePresence>
+            {showUserMenu && (
+              <motion.div
+                variants={dropdownVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="absolute right-0 mt-2 w-48 bg-lh-surface/95 backdrop-blur-md rounded-lh-xl border border-lh-border/80 shadow-lh-floating py-2 z-50 text-xs"
               >
-                Configurações & APIs
-              </Link>
-              <Link
-                href="/privacidade"
-                onClick={() => setShowUserMenu(false)}
-                className="block px-4 py-2 text-lh-text-secondary hover:bg-lh-surface-alt hover:text-lh-text"
-              >
-                Política de Privacidade
-              </Link>
-              <Link
-                href="/termos"
-                onClick={() => setShowUserMenu(false)}
-                className="block px-4 py-2 text-lh-text-secondary hover:bg-lh-surface-alt hover:text-lh-text"
-              >
-                Termos & Atribuições Google
-              </Link>
-            </div>
-          )}
+                <div className="px-4 py-2 border-b border-lh-border/80">
+                  <p className="font-semibold text-lh-text">Equipe Comercial</p>
+                  <p className="text-[11px] text-lh-text-muted">Lead Hunter</p>
+                </div>
+                <Link
+                  href="/configuracoes"
+                  onClick={() => setShowUserMenu(false)}
+                  className="block px-4 py-2 text-lh-text-secondary hover:bg-lh-surface-alt hover:text-lh-text transition-colors"
+                >
+                  Configurações & APIs
+                </Link>
+                <Link
+                  href="/privacidade"
+                  onClick={() => setShowUserMenu(false)}
+                  className="block px-4 py-2 text-lh-text-secondary hover:bg-lh-surface-alt hover:text-lh-text transition-colors"
+                >
+                  Política de Privacidade
+                </Link>
+                <Link
+                  href="/termos"
+                  onClick={() => setShowUserMenu(false)}
+                  className="block px-4 py-2 text-lh-text-secondary hover:bg-lh-surface-alt hover:text-lh-text transition-colors"
+                >
+                  Termos & Atribuições Google
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </header>
