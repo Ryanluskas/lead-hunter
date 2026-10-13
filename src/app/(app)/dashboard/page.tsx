@@ -90,6 +90,13 @@ export default function DashboardPage() {
             </button>
           </div>
 
+          <Link href="/sala-de-receita">
+            <button className="px-3 py-1.5 rounded-lh-md bg-gradient-to-r from-[#b00000] to-[#520000] hover:from-[#ff5a5a] hover:to-[#b00000] text-white text-xs font-bold font-mono uppercase tracking-wider flex items-center gap-2 shadow-[0_0_15px_rgba(176,0,0,0.5)] transition-all cursor-pointer">
+              <span className="w-2 h-2 rounded-full bg-[#ff5a5a] animate-ping" />
+              <span>Sala de Receita</span>
+            </button>
+          </Link>
+
           <Link href="/leads/buscar">
             <Button variant="primary" size="sm">
               <Plus className="w-4 h-4" /> Buscar Empresas

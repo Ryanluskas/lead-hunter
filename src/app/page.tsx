@@ -47,9 +47,10 @@ export default function LandingPage() {
             <a href="#metodologia" className="hover:text-white transition-colors">
               Metodologia
             </a>
-            <a href="#sala-receita" className="hover:text-white transition-colors">
+            <Link href="/sala-de-receita" className="hover:text-white transition-colors flex items-center gap-1.5 text-[#ff5a5a]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff5a5a] animate-ping" />
               Sala de Receita
-            </a>
+            </Link>
             <Link href="/leads/buscar" className="hover:text-white transition-colors flex items-center gap-1">
               <Search className="w-3.5 h-3.5 text-[#ff5a5a]" />
               Radar de Leads
@@ -404,8 +405,17 @@ export default function LandingPage() {
               </span>
             </div>
 
-            <div className="text-xs font-mono text-[#8E8D92]">
-              31/08/2026 • 17:35:40 GMT-03
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-[#8E8D92]">
+                31/08/2026 • 17:35:40 GMT-03
+              </span>
+              <Link
+                href="/sala-de-receita"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#520000] hover:bg-[#b00000] text-white text-xs font-mono font-bold transition-all shadow-[0_0_15px_rgba(255,90,90,0.4)]"
+              >
+                <span>Tela Cheia</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#ff5a5a]" />
+              </Link>
             </div>
           </div>
 

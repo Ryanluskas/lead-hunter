@@ -58,6 +58,7 @@ const navGroups: NavGroup[] = [
       { name: 'Tarefas', href: '/tarefas', icon: CheckSquare },
       { name: 'Propostas', href: '/ia?tab=proposal', icon: FileText },
       { name: 'Vendas', href: '/vendas', icon: DollarSign },
+      { name: 'Sala de Receita', href: '/sala-de-receita', icon: Sparkles, badge: 'LIVE' },
     ],
   },
   {
