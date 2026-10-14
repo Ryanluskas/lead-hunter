@@ -84,7 +84,7 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
     <motion.aside
       animate={{ width: collapsed ? 76 : 248 }}
       transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-      className="hidden md:flex flex-col bg-lh-sidebar text-lh-text-inverse h-screen sticky top-0 z-30 select-none shrink-0 border-r border-[#174B55] shadow-xs"
+      className="hidden md:flex flex-col bg-[#09090b] text-lh-text-inverse h-screen sticky top-0 z-30 select-none shrink-0 border-r border-[#27272a] shadow-xl"
     >
       {/* Top Brand Logo */}
       <div className="h-16 px-4 flex items-center justify-between border-b border-[#174B55] shrink-0">
@@ -143,9 +143,9 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    'group relative flex items-center gap-3 px-3 py-2 rounded-lh-md text-[13px] font-medium transition-colors',
+                    'group relative flex items-center gap-3 px-3 py-2 rounded-[4px] text-[13px] font-medium transition-colors',
                     isActive
-                      ? 'bg-lh-sidebar-active text-white font-semibold'
+                      ? 'bg-[#18181b] text-white font-semibold'
                       : 'text-[#BED7DC] hover:bg-lh-sidebar-hover hover:text-white'
                   )}
                   title={collapsed ? item.name : undefined}
@@ -162,7 +162,7 @@ export function Sidebar({ onOpenTutorial }: SidebarProps) {
                   {isActive && (
                     <motion.div
                       layoutId="sidebarActiveIndicator"
-                      className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-lh-accent rounded-r-sm"
+                      className="absolute left-0 top-1.5 bottom-1.5 w-0.5 bg-amber-400 rounded-r-sm"
                     />
                   )}
                 </Link>
